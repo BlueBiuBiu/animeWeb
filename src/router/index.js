@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-const Detail = () => import('views/detail/Detail')
+const JapanAnime = () => import('views/detail/JapanAnime')
+const EuropeAnime = () => import('views/detail/EuropeAnime')
+const ChineseAnime = () => import('views/detail/ChineseAnime')
+const OtherAnime = () => import('views/detail/OtherAnime')
 const Home = () => import('views/home/Home')
 
 Vue.use(VueRouter)
@@ -11,8 +14,20 @@ Vue.use(VueRouter)
       component: Home
     },
     {
-      path: '/more',
-      component: Detail
+      path: '/japan',
+      component: JapanAnime
+    },
+    {
+      path: '/chinese',
+      component: ChineseAnime
+    },
+    {
+      path: '/europe',
+      component: EuropeAnime
+    },
+    {
+      path: '/other',
+      component: OtherAnime
     },
   ]
 
