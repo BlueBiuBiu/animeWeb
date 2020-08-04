@@ -2,8 +2,8 @@
   <div>
     <div class="top">
       <span class="top-left"><a href="">sky动漫</a></span>
-      <span class="top-center" v-for="item in title">
-        <span class="top-center-item"><a href="">{{item}}</a></span>
+      <span class="top-center" v-for="(item,index) in title">
+        <span class="top-center-item"><a @click="handleClick(index)">{{item}}</a></span>
       </span>
       <span class="top-search">
         <form action="">
@@ -13,7 +13,7 @@
       </span>
       <div class="top-right">
         <span>
-          <a href=""><img class="top-right-img" src="~assets/img/akari.jpg" alt=""></a>
+          <a><img class="top-right-img" src="~assets/img/akari.jpg" alt=""></a>
           <span class="top-right-login"><a href="">登录/注册</a></span>
         </span>
       </div>
@@ -29,6 +29,27 @@ export default {
       title: ['首页','日本动漫','国内动漫','欧美动漫','其它动漫']
     }
   },
+  methods: {
+    handleClick(index){
+      switch(index){
+        case 0:
+          this.$router.push("/")
+          break;
+        case 1:
+          this.$router.push("/japan")
+          break;
+        case 2:
+          this.$router.push("/chinese")
+          break;
+        case 3:
+          this.$router.push("/europe")
+          break;
+        case 4:
+          this.$router.push("/other")
+          break;
+      }
+    }
+  },
 }
 </script>
 
@@ -36,6 +57,9 @@ export default {
     a {
       color: white;
       text-decoration: none;
+    }
+    a:hover {
+      cursor: pointer;
     }
    .top {
     width: 100%;
