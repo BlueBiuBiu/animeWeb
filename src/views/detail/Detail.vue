@@ -6,9 +6,10 @@
         <span><slot name="topImg"><img src="~assets/img/caidan.svg" alt=""></slot></span>
         <span class="top-text"><slot name="topTitle">日本动漫</slot></span>
         <span class="top-right">
-          <span><a href="">按时间</a></span>
-          <span><a href="">按人气</a></span>
-          <span><a href="">按推荐</a></span>
+          <span v-for="(item,index) in rankType"
+            @click="rankClick(index)" 
+            :class="{topRightActive : index === rankIndex}">
+            <a :class="{topRightActiveFont : index === rankIndex}">{{item}}</a></span>
         </span>
       </div>
       <div class="center">
@@ -18,7 +19,7 @@
             <td v-for="(item,index) in animeType">
               <span :class="{active: index === typeIndex}"
               @click="typeClick(index)">
-                <a>{{item}}</a>
+                <a :class="{active: index === typeIndex}">{{item}}</a>
               </span>
             </td>
           </tr>
@@ -27,7 +28,7 @@
             <td v-for="(item,index) in animePlace">
               <span :class="{active: index === placeIndex}"
               @click="placeClick(index)">
-                <a>{{item}}</a>
+                <a :class="{active: index === placeIndex}">{{item}}</a>
               </span>
             </td>
           </tr>
@@ -36,16 +37,16 @@
             <td v-for="(item,index) in animeBirth">
               <span :class="{active: index === birthIndex}"
               @click="birthClick(index)">
-                <a>{{item}}</a>
+                <a :class="{active: index === birthIndex}">{{item}}</a>
               </span>
             </td>
           </tr>
           <tr>
             <th>语言</th>
             <td v-for="(item,index) in animeLanguage">
-              <span :class="{active: index === LanguageIndex}"
-              @click="LanguageClick(index)">
-                <a>{{item}}</a>
+              <span :class="{active: index === languageIndex}"
+              @click="languageClick(index)">
+                <a :class="{active: index === languageIndex}">{{item}}</a>
               </span>
             </td>
           </tr>
@@ -65,7 +66,9 @@ export default {
       typeIndex: 0,
       placeIndex: 0,
       birthIndex: 0,
-      LanguageIndex: 0,
+      languageIndex: 0,
+      rankIndex: 0,
+      rankType: ['按时间','按人气','按推荐'],
       animeType: ['全部','恋爱','竞技','校园','热血','青春'],
       animePlace: ['全部','日本','国内','欧美','其它'],
       animeBirth: ['全部','2021','2020','2019','2018','2017','2016'],
@@ -87,8 +90,11 @@ export default {
     birthClick(index){  
       this.birthIndex = index
     },
-    LanguageClick(index){
-      this.LanguageIndex = index
+    languageClick(index){
+      this.languageIndex = index
+    },
+    rankClick(index){
+      this.rankIndex = index
     }
   },
 }
@@ -132,6 +138,15 @@ export default {
     right: 80px;
     top: 150px;
     justify-content: space-between;
+  }
+  .top-right span {
+    padding-bottom: 8px;
+  }
+  .topRightActive {
+    border-bottom: 2px solid #ff5777;
+  }
+  .topRightActiveFont {
+    color: #ff5777;
   }
   .center {
     font-size: 15px;

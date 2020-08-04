@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="top">
-      <span class="top-left">sky动漫</span>
+      <span class="top-left"><a href="">sky动漫</a></span>
       <span class="top-center" v-for="item in title">
         <span class="top-center-item"><a href="">{{item}}</a></span>
       </span>
@@ -13,7 +13,7 @@
       </span>
       <div class="top-right">
         <span>
-          <img class="top-right-img" src="~assets/img/akari.jpg" alt="">
+          <a href=""><img class="top-right-img" src="~assets/img/akari.jpg" alt=""></a>
           <span class="top-right-login"><a href="">登录/注册</a></span>
         </span>
       </div>
