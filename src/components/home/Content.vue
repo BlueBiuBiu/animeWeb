@@ -5,10 +5,10 @@
       <span class="recommand"><slot name="leftTitle">sky动漫推荐</slot></span>
       <span class="more"><slot name="more"><a>更多>></a></slot></span>
       <div class="anime-content">
-        <div class="anime-content-item"  v-for="item in anime">
+        <div class="anime-content-item"  v-for="(item,index) in anime">
           <img :src="item.src" alt="">
           <div class="introduce">
-            <div class="item-name"><a href="">{{item.name}}</a></div>
+            <div class="item-name"><a @click="nameClick(index)">{{item.name}}</a></div>
             <div class="item-author">{{item.author}}</div>
           </div>
         </div>
@@ -41,6 +41,10 @@
 export default {
   name: '',
   methods: {
+    nameClick(index){
+      //console.log("--------");
+      this.$router.push("/introduce")
+    }
   },
   data() {
     return {
