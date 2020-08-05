@@ -29,6 +29,11 @@
         <img src="~assets/img/liebiaodaohang_dongman.svg" alt="">
         <div>sky动漫在线观看</div>
       </div>
+      <div class="play">
+        <!-- <div class="play-item" v-for="item in number"><a href="">{{item}}</a></div>
+         -->
+         <a v-for="item in number">{{item}}</a>
+      </div>
     </div>
   </div>
 </template>
@@ -40,6 +45,9 @@ export default {
   data() {
     return {
       collect: false,
+      number: ['第一集','第一集','第一集','第一集','第一集',
+      '第一集','第一集','第一集','第一集','第一集','第一集'
+      ],
       AnimeMessage: [
       {
         src: require("assets/img/animetest.jpg") ,
@@ -70,8 +78,9 @@ export default {
     text-decoration: none;
   }
   a:hover {
-    color: #ff5777;
+    color: white;
     cursor:pointer;
+    background: #ff5777;
   }
   .introduce {
     margin-top: 60px;
@@ -124,5 +133,22 @@ export default {
     width: 30px;
     height: 30px;
     padding-right: 10px;
+  }
+  .play {
+    width: 1020px;
+    height: 150px;
+    overflow: scroll;
+    margin-top: 10px;
+  }
+  .play a {
+    text-align: center;
+    display: inline-block;
+    width: 130px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 5px;
+    border: 1px solid rgba(100, 100, 100, .1);
+    margin-right: 10px;
+    margin-top: 10px;
   }
 </style>
