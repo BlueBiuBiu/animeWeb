@@ -136,7 +136,7 @@ export default {
   }
   .play {
     width: 1020px;
-    height: 150px;
+    height: 200px;
     overflow: scroll;
     margin-top: 10px;
   }

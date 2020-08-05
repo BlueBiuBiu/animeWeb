@@ -5,8 +5,8 @@
       <span class="recommand"><slot name="leftTitle">sky动漫推荐</slot></span>
       <span class="more"><slot name="more"><a>更多>></a></slot></span>
       <div class="anime-content">
-        <div class="anime-content-item"  v-for="(item,index) in anime">
-          <img :src="item.src" alt="">
+        <div class="anime-content-item"  v-for="(item,index) in anime" v-if="index < 12">
+          <img :src="require('assets/img/animetest.jpg')" alt="">
           <div class="introduce">
             <div class="item-name"><a @click="nameClick(index)">{{item.name}}</a></div>
             <div class="item-author">{{item.author}}</div>
@@ -46,72 +46,81 @@ export default {
       this.$router.push("/introduce")
     }
   },
+  props: {
+    anime: {
+      type: Array,
+      default(){
+        return []
+      }
+    }
+  },
   data() {
     return {
       more: '更多 >>',
       hot: '每周推荐',
-      anime: [
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      {
-          name: 'sky动漫',
-          author: '张三,李四,王五,sky动漫,动漫网站',
-          src: require("assets/img/animetest.jpg") 
-      },
-      ]
+      img: require("assets/img/animetest.jpg")
+     /*  anime: [
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+        {
+            name: 'sky动漫',
+            author: '张三,李四,王五,sky动漫,动漫网站',
+            src: require("assets/img/animetest.jpg") 
+        },
+      ] */
     }
   },
 }
@@ -169,10 +178,10 @@ export default {
     background: white;
     width: 1010px;
     display: flex;
-    justify-content: space-between;
     flex-wrap: wrap;
   }
   .anime-content-item {
+    padding-right: 5px;
     width: 16%;
   }
   .anime-content-item img {
