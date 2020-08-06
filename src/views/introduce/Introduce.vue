@@ -2,16 +2,16 @@
   <div>
     <Top></Top>
     <div class="introduce">
-      <div class="message" v-for="item in AnimeMessage">
-        <img class="AnimeImg" :src="item.src" alt="">
+      <div class="message">
+        <img class="AnimeImg" :src="require('assets/img/animetest.jpg')" alt="">
         <div class="AnimeMessage">
           <ul>
-            <li><div>{{item.animeName}}</div></li>
-            <li><span>类型:</span> {{item.type}}</li>
-            <li><span>地区:</span> {{item.birth}}</li>
-            <li><span>语言:</span> {{item.language}}</li>
-            <li><span>年份:</span> {{item.year}}</li>
-            <li><span>导演:</span> {{item.author}}</li>
+            <li><div>{{animeMessage.name}}</div></li>
+            <li><span>类型:</span> {{animeMessage.type}}</li>
+            <li><span>地区:</span> {{animeMessage.place}}</li>
+            <li><span>语言:</span> {{animeMessage.language}}</li>
+            <li><span>年份:</span> {{animeMessage.year}}</li>
+            <li><span>导演:</span> {{animeMessage.author}}</li>
             <li>
               <div v-if="!collect">
                 <img src="~assets/img/wodezhuifan_before.svg" alt="">
@@ -48,18 +48,12 @@ export default {
       number: ['第一集','第一集','第一集','第一集','第一集',
       '第一集','第一集','第一集','第一集','第一集','第一集'
       ],
-      AnimeMessage: [
-      {
-        src: require("assets/img/animetest.jpg") ,
-        animeName: '动漫名',
-        type: '恋爱',
-        birth: '日本',
-        language: '日语',
-        year: '2016',
-        author: '宫崎骏、久让石'
-      }
-      ]
+      animeMessage: null,
     }
+  },
+  created() {
+    this.animeMessage = this.$store.state.animeMessage
+    console.log(this.$store.state.animeMessage);
   },
   components: {
     Top

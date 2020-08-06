@@ -8,7 +8,7 @@
         <div class="anime-content-item"  v-for="(item,index) in anime" v-if="index < 12">
           <img :src="require('assets/img/animetest.jpg')" alt="">
           <div class="introduce">
-            <div class="item-name"><a @click="nameClick(index)">{{item.name}}</a></div>
+            <div class="item-name"><a @click="nameClick(item)">{{item.name}}</a></div>
             <div class="item-author">{{item.author}}</div>
           </div>
         </div>
@@ -41,8 +41,12 @@
 export default {
   name: '',
   methods: {
-    nameClick(index){
-      //console.log("--------");
+    nameClick(item){
+      //console.log("--------",item);
+      this.$store.commit({
+        type: "nameClick",
+        item
+      })
       this.$router.push("/introduce")
     }
   },

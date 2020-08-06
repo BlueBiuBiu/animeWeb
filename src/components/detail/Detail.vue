@@ -56,7 +56,7 @@
         <div class="bottom-item" v-for="item in anime1">
           <img :src="require('assets/img/animetest.jpg')" alt="">
           <div class="introduce">
-            <div class="item-name"><a href="">{{item.name}}</a></div>
+            <div class="item-name"><a @click="nameClick(item)">{{item.name}}</a></div>
             <div class="item-author">{{item.author}}</div>
           </div>
         </div>
@@ -118,6 +118,14 @@ export default {
     Top
   },
   methods: {
+    nameClick(item){
+      //console.log("--------",item);
+      this.$store.commit({
+        type: "nameClick",
+        item
+      })
+      this.$router.push("/introduce")
+    },
     typeClick(index){
       //console.log(index);
       this.typeIndex = index
@@ -231,7 +239,7 @@ export default {
       //console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      //console.log(`当前页: ${val}`);
       this.page = val
       getAnimeTypePage(this.type,this.place,this.birth,this.language,val,14).then(res => {
         this.anime1 = res.content
