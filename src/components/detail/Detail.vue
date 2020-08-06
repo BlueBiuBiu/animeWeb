@@ -53,7 +53,7 @@
         </table>
       </div>
       <div class="bottom">
-        <div class="bottom-item" v-for="item in anime">
+        <div class="bottom-item" v-for="item in anime1">
           <img :src="require('assets/img/animetest.jpg')" alt="">
           <div class="introduce">
             <div class="item-name"><a href="">{{item.name}}</a></div>
@@ -80,7 +80,7 @@
 <script>
 import Top from "components/home/Top"
 
-import {getAnimeType} from 'network/home'
+import {getAnimeType,getAnimeTypePage} from 'network/home'
 export default {
   name: 'Detail',
   data() {
@@ -91,6 +91,8 @@ export default {
       birthIndex: 0,
       languageIndex: 0,
       rankIndex: 0,
+      page: 1,
+      pageSize: 14,
       type: '全部',
       place: '全部',
       birth: '全部',
@@ -101,12 +103,16 @@ export default {
       animeBirth: ['全部','2021','2020','2019','2018','2017','2016'],
       animeLanguage: ['全部','日语','国语','英语','粤语'],
       anime: null,
+      anime1: null
     }
   },
   created() {
-    getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
-        this.anime = res
-      })
+    // getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
+    //     this.anime = res
+    //   })
+    getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
+        this.anime1 = res.content
+    })
   },
   components: {
     Top
@@ -135,10 +141,10 @@ export default {
           this.type = '青春'
           break;
       }
-      getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
-        this.anime = res
+      getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
+        this.anime1 = res.content
       })
-      //this.$emit('typeClick',index)
+      //console.log(this.anime);
     },
     placeClick(index){
       //console.log(index);
@@ -161,10 +167,9 @@ export default {
           break;
       }
       //console.log("place",index);
-      getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
-        this.anime = res
+      getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
+        this.anime1 = res.content
       })
-      //this.$emit('placeClick',index)
     },
     birthClick(index){  
       this.birthIndex = index
@@ -192,10 +197,9 @@ export default {
           break;
       }
       //console.log("birth",index);
-      getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
-        this.anime = res
+      getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
+        this.anime1 = res.content
       })
-      //this.$emit('birthClick',index)
     },
     languageClick(index){
       this.languageIndex = index
@@ -216,10 +220,9 @@ export default {
           this.language = '粤语'
           break;
       }
-      getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
-        this.anime = res
+      getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
+        this.anime1 = res.content
       })
-      //this.$emit('languageClick',index)
     },
     rankClick(index){
       this.rankIndex = index
@@ -229,6 +232,10 @@ export default {
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
+      this.page = val
+      getAnimeTypePage(this.type,this.place,this.birth,this.language,val,14).then(res => {
+        this.anime1 = res.content
+      })
     }
   },
 }
