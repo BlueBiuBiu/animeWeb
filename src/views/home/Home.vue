@@ -53,7 +53,7 @@ export default {
   },
   created() {
     getHomeAnime().then(res => {
-      console.log(res);
+      //console.log(res);
       this.anime = res
       for(let item of res){
         if(item.place == '国内'){

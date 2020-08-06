@@ -54,7 +54,7 @@
       </div>
       <div class="bottom">
         <div class="bottom-item" v-for="item in anime">
-          <img :src="item.src" alt="">
+          <img :src="require('assets/img/animetest.jpg')" alt="">
           <div class="introduce">
             <div class="item-name"><a href="">{{item.name}}</a></div>
             <div class="item-author">{{item.author}}</div>
@@ -67,10 +67,10 @@
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
           :current-page.sync="currentPage"
-          :page-size="100"
+          :page-size="14"
           layout="total, prev, pager, next, jumper"
-          :page-sizes="[42,42,42]"
-          :total="300">
+          :page-sizes="[14,14,14]"
+          :total="42">
         </el-pagination>
       </div>
     </div>
@@ -79,252 +79,147 @@
 
 <script>
 import Top from "components/home/Top"
+
+import {getAnimeType} from 'network/home'
 export default {
   name: 'Detail',
   data() {
     return {
-      currentPage1: 1,
+      currentPage: 1,
       typeIndex: 0,
       placeIndex: 0,
       birthIndex: 0,
       languageIndex: 0,
       rankIndex: 0,
+      type: '全部',
+      place: '全部',
+      birth: '全部',
+      language: '全部',
       rankType: ['按时间','按人气','按推荐'],
       animeType: ['全部','恋爱','竞技','校园','热血','青春'],
       animePlace: ['全部','日本','国内','欧美','其它'],
       animeBirth: ['全部','2021','2020','2019','2018','2017','2016'],
       animeLanguage: ['全部','日语','国语','英语','粤语'],
-      anime: [
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        }
-      ]
+      anime: null,
     }
+  },
+  created() {
+    getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
+        this.anime = res
+      })
   },
   components: {
     Top
   },
   methods: {
     typeClick(index){
-      console.log(index);
+      //console.log(index);
       this.typeIndex = index
+       switch (index) {
+        case 0:
+          this.type = '全部'
+          break;
+        case 1:
+          this.type = '恋爱'
+          break;
+        case 2:
+          this.type = '竞技'
+          break;
+        case 3:
+          this.type = '校园'
+          break;
+        case 4:
+          this.type = '热血'
+          break;
+        default:
+          this.type = '青春'
+          break;
+      }
+      getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
+        this.anime = res
+      })
+      //this.$emit('typeClick',index)
     },
     placeClick(index){
       //console.log(index);
       this.placeIndex = index
+      switch (index) {
+        case 0:
+          this.place = '全部'
+          break;
+        case 1:
+          this.place = '日本'
+          break;
+        case 2:
+          this.place = '国内'
+          break;
+        case 3:
+          this.place = '欧美'
+          break;
+        default:
+          this.place = '其它'
+          break;
+      }
+      //console.log("place",index);
+      getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
+        this.anime = res
+      })
+      //this.$emit('placeClick',index)
     },
     birthClick(index){  
       this.birthIndex = index
+       switch (index) {
+        case 0:
+          this.birth = '全部'
+          break;
+        case 1:
+          this.birth = '2021'
+          break;
+        case 2:
+          this.birth = '2020'
+          break;
+        case 3:
+          this.birth = '2019'
+          break;
+        case 4:
+          this.birth = '2018'
+          break;
+        case 5:
+          this.birth = '2017'
+          break;
+        default:
+          this.birth = '2016'
+          break;
+      }
+      //console.log("birth",index);
+      getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
+        this.anime = res
+      })
+      //this.$emit('birthClick',index)
     },
     languageClick(index){
       this.languageIndex = index
+       switch (index) {
+        case 0:
+          this.language = '全部'
+          break;
+        case 1:
+          this.language = '日语'
+          break;
+        case 2:
+          this.language = '中文'
+          break;
+        case 3:
+          this.language = '英语'
+          break;
+        default:
+          this.language = '粤语'
+          break;
+      }
+      getAnimeType(this.type,this.place,this.birth,this.language).then(res => {
+        this.anime = res
+      })
+      //this.$emit('languageClick',index)
     },
     rankClick(index){
       this.rankIndex = index
@@ -333,7 +228,7 @@ export default {
       //console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      //console.log(`当前页: ${val}`);
+      console.log(`当前页: ${val}`);
     }
   },
 }
