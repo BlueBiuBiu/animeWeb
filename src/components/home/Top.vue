@@ -13,8 +13,8 @@
       </span>
       <div class="top-right">
         <span>
-          <a><img class="top-right-img" src="~assets/img/akari.jpg" alt=""></a>
-          <span class="top-right-login"><a href="">登录/注册</a></span>
+          <a @click="login"><img class="top-right-img" src="~assets/img/akari.jpg" alt=""></a>
+          <span class="top-right-login"><a @click="login">登录/注册</a></span>
         </span>
       </div>
     </div>
@@ -48,8 +48,11 @@ export default {
           this.$router.push("/other")
           break;
       }
+    },
+    login(){
+      this.$router.push("/login")
     }
-  },
+  }
 }
 </script>
 
