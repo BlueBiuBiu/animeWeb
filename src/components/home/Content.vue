@@ -6,7 +6,7 @@
       <span class="more"><slot name="more"><a>更多>></a></slot></span>
       <div class="anime-content">
         <div class="anime-content-item"  v-for="(item,index) in anime" v-if="index < 12">
-          <img :src="require('assets/img/animetest.jpg')" alt="">
+          <img :src="item.img" alt="">
           <div class="introduce">
             <div class="item-name"><a @click="nameClick(item)">{{item.name}}</a></div>
             <div class="item-author">{{item.author}}</div>
@@ -19,18 +19,18 @@
       <span class="hot-text"><slot name="rightTitle">sky动漫每周热门排行</slot></span>
       <div class="hot-recommand">
         <ul>
-          <li><span style="background: #ff5777;">1</span><a href="">sky动漫</a></li>
-          <li><span style="background: #ff5777;">2</span><a href="">sky动漫</a></li>
-          <li><span style="background: #ff5777;">3</span><a href="">sky动漫</a></li>
-          <li><span>4</span><a href="">sky动漫</a></li>
-          <li><span>5</span><a href="">sky动漫</a></li>
-          <li><span>6</span><a href="">sky动漫</a></li>
-          <li><span>7</span><a href="">sky动漫</a></li>
-          <li><span>8</span><a href="">sky动漫</a></li>
-          <li><span>9</span><a href="">sky动漫</a></li>
-          <li><span>10</span><a href="">sky动漫</a></li>
-          <li><span>11</span><a href="">sky动漫</a></li>
-          <li><span>12</span><a href="">sky动漫</a></li>
+          <li><span style="background: #ff5777;">1</span><a href="">{{hotAnime[0] | hotAnimeFilters}}</a></li>
+          <li><span style="background: #ff5777;">2</span><a href="">{{hotAnime[1] | hotAnimeFilters}}</a></li>
+          <li><span style="background: #ff5777;">3</span><a href="">{{hotAnime[2] | hotAnimeFilters}}</a></li>
+          <li><span>4</span><a href="">{{hotAnime[3] | hotAnimeFilters}}</a></li>
+          <li><span>5</span><a href="">{{hotAnime[4] | hotAnimeFilters}}</a></li>
+          <li><span>6</span><a href="">{{hotAnime[5] | hotAnimeFilters}}</a></li>
+          <li><span>7</span><a href="">{{hotAnime[6] | hotAnimeFilters}}</a></li>
+          <li><span>8</span><a href="">{{hotAnime[7] | hotAnimeFilters}}</a></li>
+          <li><span>9</span><a href="">{{hotAnime[8] | hotAnimeFilters}}</a></li>
+          <li><span>10</span><a href="">{{hotAnime[9] | hotAnimeFilters}}</a></li>
+          <li><span>11</span><a href="">{{hotAnime[10] | hotAnimeFilters}}</a></li>
+          <li><span>12</span><a href="">{{hotAnime[11] | hotAnimeFilters}}</a></li>
         </ul>
       </div>
     </div>
@@ -39,7 +39,27 @@
 
 <script>
 export default {
-  name: '',
+  data() {
+    return {
+      more: '更多 >>',
+      hot: '每周推荐',
+      img: require("assets/img/animetest.jpg"),
+    }
+  },
+  props: {
+    anime: {
+      type: Array,
+      default(){
+        return []
+      }
+    },
+    hotAnime: {
+      type: Array,
+      default(){
+        return []
+      }
+    }
+  },
   methods: {
     nameClick(item){
       //console.log("--------",item);
@@ -50,83 +70,12 @@ export default {
       this.$router.push("/introduce")
     }
   },
-  props: {
-    anime: {
-      type: Array,
-      default(){
-        return []
-      }
+  filters: {
+    hotAnimeFilters(value){
+      if(value == null) return "暂时没有更多"
+      return value
     }
-  },
-  data() {
-    return {
-      more: '更多 >>',
-      hot: '每周推荐',
-      img: require("assets/img/animetest.jpg")
-     /*  anime: [
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-        {
-            name: 'sky动漫',
-            author: '张三,李四,王五,sky动漫,动漫网站',
-            src: require("assets/img/animetest.jpg") 
-        },
-      ] */
-    }
-  },
+  }
 }
 </script>
 
@@ -189,6 +138,7 @@ export default {
     width: 16%;
   }
   .anime-content-item img {
+    width: 150px;
     height: 200px;
   }
   .introduce {

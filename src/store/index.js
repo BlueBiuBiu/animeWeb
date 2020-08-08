@@ -8,7 +8,7 @@ import moduleA from './modules/moduleA'
 Vue.use(Vuex)
 
 const state = {
-  animeMessage: []
+  animeMessage: [],
 }
 const store = new Vuex.Store({
   state,

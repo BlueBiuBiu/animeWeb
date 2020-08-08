@@ -2,7 +2,8 @@
   <div>
     <Top></Top>
     <div class="introduce">
-      <div class="message">
+      <Video v-show="isShow" :animeLink="animeLink" ref="videoPlay"></Video>
+      <div class="message" v-show="!isShow">
         <img class="AnimeImg" :src="require('assets/img/animetest.jpg')" alt="">
         <div class="AnimeMessage">
           <ul>
@@ -32,7 +33,7 @@
       <div class="play">
         <!-- <div class="play-item" v-for="item in number"><a href="">{{item}}</a></div>
          -->
-         <a v-for="item in number">{{item}}</a>
+         <a v-for="(item,index) in number" @click="playIndex(index)">{{item}}</a>
       </div>
     </div>
   </div>
@@ -40,29 +41,46 @@
 
 <script>
 import Top from "components/home/Top.vue"
+import Video from "components/video/Video.vue"
+
+import {getAnimePlayIndex} from "network/home"
 export default {
   name: '',
   data() {
     return {
       collect: false,
-      number: ['第一集','第一集','第一集','第一集','第一集',
-      '第一集','第一集','第一集','第一集','第一集','第一集'
-      ],
+      isShow: false,
+      number: [],
       animeMessage: null,
+      animeLink: null
     }
   },
   created() {
     this.animeMessage = this.$store.state.animeMessage
-    console.log(this.$store.state.animeMessage);
+    //console.log(this.$store.state.animeMessage);
+    this.number = this.animeMessage.index.split(',')
+    //console.log(this.index);
   },
   components: {
-    Top
+    Top,
+    Video
   },
   methods: {
     collectClick(){
       this.collect = !this.collect
+    },
+    playIndex(index){
+      //getAnimePlayIndex(this.animeMessage.id,index);
+      if(this.isShow != true){
+        this.isShow = !this.isShow
+      }
+      getAnimePlayIndex(this.animeMessage.id,index).then( res => {
+        this.animeLink = res
+      })
+      this.$refs.videoPlay.playVideo();
     }
-  },
+
+  }
 }
 </script>
 
