@@ -72,7 +72,7 @@ export default {
   },
   filters: {
     hotAnimeFilters(value){
-      if(value == null) return "暂时没有更多"
+      if(value == null) return "暂无更多"
       return value
     }
   }

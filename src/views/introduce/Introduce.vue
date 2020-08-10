@@ -76,6 +76,7 @@ export default {
       }
       getAnimePlayIndex(this.animeMessage.id,index).then( res => {
         this.animeLink = res
+        console.log(this.animeLink);
       })
       this.$refs.videoPlay.playVideo();
     }

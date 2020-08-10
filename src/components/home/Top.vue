@@ -12,9 +12,14 @@
         </form>
       </span>
       <div class="top-right">
+        <span class="logout" v-show="this.$store.state.loginState" @click="login"><a>退出登录</a></span>
         <span>
-          <a @click="login"><img class="top-right-img" src="~assets/img/akari.jpg" alt=""></a>
-          <span class="top-right-login"><a @click="login">登录/注册</a></span>
+          <a v-if="this.$store.state.loginState" @click="userInfo"><img class="top-right-img" src="~assets/img/akari.jpg" alt=""></a>
+          <a v-else @click="login"><img class="top-right-img" src="~assets/img/akari.jpg" alt=""></a>
+          <span v-if="this.$store.state.loginState" class="top-right-login">
+            <a @click="userInfo" class="userInfo">欢迎你~{{this.$store.state.loginUsername}}</a>
+          </span>
+          <span v-else class="top-right-login"><a @click="login">登录/注册</a></span>
         </span>
       </div>
     </div>
@@ -57,14 +62,23 @@ export default {
 </script>
 
 <style scoped>
-    a {
-      color: white;
-      text-decoration: none;
-    }
-    a:hover {
-      cursor: pointer;
-    }
-   .top {
+  a {
+    color: white;
+    text-decoration: none;
+  }
+  a:hover {
+    cursor: pointer;
+  }
+  .logout {
+    position: absolute;
+    top: 27px;
+    right: 10px;
+    font-size: 12px;
+  }
+  .userInfo{
+    color: turquoise;
+  }
+  .top {
     width: 100%;
     height: 60px;
     background: #ff5777;

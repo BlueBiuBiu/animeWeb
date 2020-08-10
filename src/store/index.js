@@ -9,6 +9,8 @@ Vue.use(Vuex)
 
 const state = {
   animeMessage: [],
+  loginState: false,
+  loginUsername: '',
 }
 const store = new Vuex.Store({
   state,
