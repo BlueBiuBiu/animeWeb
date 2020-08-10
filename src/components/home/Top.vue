@@ -12,7 +12,6 @@
         </form>
       </span>
       <div class="top-right">
-        <span class="logout" v-show="this.$store.state.loginState" @click="login"><a>退出登录</a></span>
         <span>
           <a v-if="this.$store.state.loginState" @click="userInfo"><img class="top-right-img" src="~assets/img/akari.jpg" alt=""></a>
           <a v-else @click="login"><img class="top-right-img" src="~assets/img/akari.jpg" alt=""></a>
@@ -56,6 +55,9 @@ export default {
     },
     login(){
       this.$router.push("/login")
+    },
+    userInfo(){
+      this.$router.push("/userInfo")
     }
   }
 }
@@ -68,12 +70,6 @@ export default {
   }
   a:hover {
     cursor: pointer;
-  }
-  .logout {
-    position: absolute;
-    top: 27px;
-    right: 10px;
-    font-size: 12px;
   }
   .userInfo{
     color: turquoise;
