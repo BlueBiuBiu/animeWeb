@@ -152,7 +152,7 @@ export default {
     width: 150px;
     font-size: 13px;
     overflow: hidden;
-    text-overflow:ellipsis;
+    text-overflow: ellipsis;
     white-space: nowrap;
     color: #999;
   }

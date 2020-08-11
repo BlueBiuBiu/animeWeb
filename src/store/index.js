@@ -10,7 +10,9 @@ Vue.use(Vuex)
 const state = {
   animeMessage: [],
   loginState: false,
+  userCollect: [],
   loginUsername: '',
+  collectAnime: [],
 }
 const store = new Vuex.Store({
   state,

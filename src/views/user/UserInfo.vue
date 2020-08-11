@@ -8,7 +8,7 @@
         <div><a @click="mine">我的追番</a></div>
         <div><a @click="logout">退出登录</a></div>
       </div>
-      <div class="tabDetail">
+      <div class="tabDetail" :style="backgroundImg">
         <Profile v-if="isProfile"></Profile>
         <History v-else-if="isHistory"></History>
         <Mine v-else></Mine>
@@ -28,7 +28,12 @@ export default {
   data() {
     return {
       isProfile: true,
-      isHistory: false
+      isHistory: false,
+      backgroundImg: {
+      backgroundImage: "url(" + require("assets/img/userbackground.jpg") + ")",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "100% 100%",
+      },
     }
   },
   components: {

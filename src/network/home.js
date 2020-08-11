@@ -31,3 +31,15 @@ export function getUserInfo(username,password){
         url: '/login/' + String(username) +'/' +String(password)
     })
 }
+
+export function insertUserInfo(username,password,id,data){
+    return request({
+        method: "POST",
+        url: '/login/' + String(username) +'/' +String(password) + '/' + String(id),
+        data: { data },
+        header:{
+            'Content-Type':'application/json'  
+        }
+    
+    })
+}

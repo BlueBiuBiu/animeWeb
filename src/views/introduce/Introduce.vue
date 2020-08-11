@@ -14,7 +14,7 @@
             <li><span>年份:</span> {{animeMessage.year}}</li>
             <li><span>导演:</span> {{animeMessage.author}}</li>
             <li>
-              <div v-if="!collect">
+              <div v-if="!this.collect">
                 <img src="~assets/img/wodezhuifan_before.svg" alt="">
                 <a @click="collectClick">收藏</a>
               </div>
@@ -60,6 +60,8 @@ export default {
     //console.log(this.$store.state.animeMessage);
     this.number = this.animeMessage.index.split(',')
     //console.log(this.index);
+    this.collect = this.$store.state.collectAnime.find(item => item.id == this.animeMessage.id).collectButton
+    //console.log(this.collect);
   },
   components: {
     Top,
@@ -68,6 +70,20 @@ export default {
   methods: {
     collectClick(){
       this.collect = !this.collect
+      if(this.collect == true){
+          this.$store.commit({
+          type: "collect",
+          collect: this.animeMessage
+        })
+        this.collect = this.$store.state.collectAnime.find(item => item.id == this.animeMessage.id).collectButton
+      }
+      else{
+        this.$store.commit({
+          type: "cancelCollect",
+          cancelCollect: this.animeMessage
+        })
+      }
+      
     },
     playIndex(index){
       //getAnimePlayIndex(this.animeMessage.id,index);

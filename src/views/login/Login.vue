@@ -58,9 +58,9 @@ export default {
       }
       else {
           getUserInfo(this.user.username,this.user.password).then(res => {
-          //console.log(res[0]);
+          //console.log(res);
           if(typeof(res[0]) == "undefined"){
-            console.log('用户名不正确');
+            //console.log('用户名不正确');
             this.isUsername = true
             this.user = {}
           }
@@ -73,7 +73,11 @@ export default {
             //console.log("登录成功");
             this.$store.commit({
               type: "loginSuccess",
-              username: this.user.username
+              username: this.user
+            })
+            this.$store.commit({
+              type: "userInfo",
+              res
             })
             this.$router.replace("/")
           }
