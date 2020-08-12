@@ -61,7 +61,7 @@ export default {
     this.number = this.animeMessage.index.split(',')
     //console.log(this.index);
     this.collect = this.$store.state.collectAnime.find(item => item.id == this.animeMessage.id).collectButton
-    //console.log(this.collect);
+    console.log(this.collect);
   },
   components: {
     Top,
@@ -69,21 +69,26 @@ export default {
   },
   methods: {
     collectClick(){
-      this.collect = !this.collect
-      if(this.collect == true){
+      if(this.$store.state.loginState == true)
+      {
+        this.collect = !this.collect
+        if(this.collect == true){
+            this.$store.commit({
+            type: "collect",
+            collect: this.animeMessage
+          })
+          this.collect = this.$store.state.collectAnime.find(item => item.id == this.animeMessage.id).collectButton
+        }
+        else{
           this.$store.commit({
-          type: "collect",
-          collect: this.animeMessage
-        })
-        this.collect = this.$store.state.collectAnime.find(item => item.id == this.animeMessage.id).collectButton
-      }
+            type: "cancelCollect",
+            cancelCollect: this.animeMessage
+          })
+        }
+      } 
       else{
-        this.$store.commit({
-          type: "cancelCollect",
-          cancelCollect: this.animeMessage
-        })
+        alert("请先登录！")
       }
-      
     },
     playIndex(index){
       //getAnimePlayIndex(this.animeMessage.id,index);

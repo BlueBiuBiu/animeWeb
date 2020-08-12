@@ -19,17 +19,14 @@ export default {
      let animeMessage = state.collectAnime.find(item => item.id == payLoad.collect.id)
      if(!animeMessage){
       payLoad.collect.collectButton = true
+      console.log(payLoad.collect);
       state.collectAnime.push(payLoad.collect)
      }
-     insertUserInfo(state.userInfo.username,state.userInfo.password,state.userInfo.id,state.collectAnime).then(res => {
-       console.log((res[0].collect));
-     })
+     insertUserInfo(state.userInfo.username,state.userInfo.password,state.userInfo.id,state.collectAnime)
    },
    cancelCollect(state,payLoad){
     let animeMessage = state.collectAnime.find(item => item.id == payLoad.cancelCollect.id)
     state.collectAnime = state.collectAnime.filter(item => item.id != animeMessage.id)
-    insertUserInfo(state.userInfo.username,state.userInfo.password,state.userInfo.id,state.collectAnime).then(res => {
-      console.log(res[0].collect);
-    })
+    insertUserInfo(state.userInfo.username,state.userInfo.password,state.userInfo.id,state.collectAnime)
    }
 }

@@ -79,6 +79,7 @@ export default {
               type: "userInfo",
               res
             })
+            this.$store.state.collectAnime = JSON.parse(this.$store.state.userInfo.collect)
             this.$router.replace("/")
           }
           setTimeout(() => {

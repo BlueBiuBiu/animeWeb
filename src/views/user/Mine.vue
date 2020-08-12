@@ -30,7 +30,8 @@ export default {
     }
   },
   created() {
-    this.collectAnime = this.$store.state.collectAnime
+    this.collectAnime = JSON.parse(this.$store.state.userInfo.collect)
+    console.log(JSON.parse(this.collectAnime));
   },
 
 }
