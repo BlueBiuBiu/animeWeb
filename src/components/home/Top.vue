@@ -69,6 +69,7 @@ export default {
     text-decoration: none;
   }
   a:hover {
+    color: #2892f5;
     cursor: pointer;
   }
   .userInfo{

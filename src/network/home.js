@@ -43,3 +43,9 @@ export function insertUserInfo(username,password,id,data){
     
     })
 }
+
+export function register(username,password){
+    return request({
+        url: '/register/' + String(username) +'/' +String(password)
+    })
+}

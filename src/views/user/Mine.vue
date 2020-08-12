@@ -31,7 +31,7 @@ export default {
   },
   created() {
     this.collectAnime = JSON.parse(this.$store.state.userInfo.collect)
-    console.log(JSON.parse(this.collectAnime));
+    //console.log(JSON.parse(this.collectAnime));
   },
 
 }
@@ -50,10 +50,13 @@ export default {
     height: 500px;
     margin: 0 auto;
     margin-top: 60px;
-    background: orange;
+    background: #ffffff10;
     border-radius: 5px;
     overflow-y: scroll;
     overflow-x: hidden;
+  }
+  .mine::-webkit-scrollbar {
+    display: none;
   }
   .all {
     width: 420px;
@@ -62,7 +65,7 @@ export default {
     display: flex;
     padding: 5px;
     margin: 10px;
-    background: #ff5777;
+    background: rgba(92, 92, 241,.4);
     border-radius: 5px;
     margin-bottom: 5px;
   }

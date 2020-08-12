@@ -16,13 +16,21 @@ export default {
    },
    collect(state,payLoad){
      //console.log(payLoad.collect.id);
-     let animeMessage = state.collectAnime.find(item => item.id == payLoad.collect.id)
-     if(!animeMessage){
+    if(state.collectAnime == null){
+      state.collectAnime = []
+      //console.log("----------");
       payLoad.collect.collectButton = true
-      console.log(payLoad.collect);
       state.collectAnime.push(payLoad.collect)
-     }
-     insertUserInfo(state.userInfo.username,state.userInfo.password,state.userInfo.id,state.collectAnime)
+    }
+    else{
+      let animeMessage = state.collectAnime.find(item => item.id == payLoad.collect.id)
+      if(!animeMessage){
+        payLoad.collect.collectButton = true
+        //console.log(payLoad.collect);
+        state.collectAnime.push(payLoad.collect)
+      }
+    }
+    insertUserInfo(state.userInfo.username,state.userInfo.password,state.userInfo.id,state.collectAnime)
    },
    cancelCollect(state,payLoad){
     let animeMessage = state.collectAnime.find(item => item.id == payLoad.cancelCollect.id)

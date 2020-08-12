@@ -6,6 +6,7 @@ const ChineseAnime = () => import('views/detail/ChineseAnime')
 const OtherAnime = () => import('views/detail/OtherAnime')
 const Introduce = () => import('views/introduce/Introduce')
 const Login = () => import('views/login/Login')
+const Register = () => import('views/login/Register')
 const UserInfo = () => import('views/user/UserInfo')
 const Home = () => import('views/home/Home')
 
@@ -39,6 +40,10 @@ Vue.use(VueRouter)
     {
       path: '/login',
       component: Login
+    },
+    {
+      path: '/register',
+      component: Register
     },
     {
       path: '/userInfo',

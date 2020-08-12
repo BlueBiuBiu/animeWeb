@@ -1,7 +1,7 @@
 <template>
   <div>
     <Top></Top>
-    <div class="userInfo">
+    <div class="userInfo" :style="tabBackgroundImg">
       <div class="tabControl">
         <div><a @click="profile">个人资料</a></div>
         <div><a @click="history">历史记录</a></div>
@@ -29,6 +29,11 @@ export default {
     return {
       isProfile: true,
       isHistory: false,
+      tabBackgroundImg: {
+        backgroundImage: "url(" + require("assets/img/tabbackground.jpg") + ")",
+        backgroundRepeat: "no-repeat",
+        backgroundSize: "100% 100%",
+      },
       backgroundImg: {
       backgroundImage: "url(" + require("assets/img/userbackground.jpg") + ")",
       backgroundRepeat: "no-repeat",
@@ -47,14 +52,17 @@ export default {
       this.$router.push("/login")
     },
     profile(){
+      this.backgroundImg.backgroundImage = "url(" + require("assets/img/userbackground.jpg") + ")"
       this.isProfile = true
       this.isHistory = false
     },
     history(){
+      this.backgroundImg.backgroundImage = "url(" + require("assets/img/historybackground.jpg") + ")"
       this.isHistory = true
       this.isProfile = false
     },
     mine(){
+      this.backgroundImg.backgroundImage = "url(" + require("assets/img/minebackground.jpg") + ")"
       this.isProfile = false
       this.isHistory = false
     }
@@ -69,14 +77,13 @@ export default {
     text-decoration: none;
   }
   a:hover {
-    color: #ff5777;
+    color: blue;
     cursor:pointer;
   }
   .userInfo{
     width: 300px;
     height: 90vh;
     margin-top: 8px;
-    background: rgb(243, 158, 61);
     text-align: center;
     border-radius: 3px;
   }
@@ -88,12 +95,11 @@ export default {
     height: 35px;
     line-height: 35px;
     margin: 10px;
-    background-color: thistle;
+    background: rgba(243, 114, 142, 0.7);
     border-radius: 5px;
   }
   .tabDetail {
     position: absolute;
-    background: tomato;
     left: 315px;
     top: 77px;
     right: 8px;

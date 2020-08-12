@@ -60,8 +60,10 @@ export default {
     //console.log(this.$store.state.animeMessage);
     this.number = this.animeMessage.index.split(',')
     //console.log(this.index);
-    this.collect = this.$store.state.collectAnime.find(item => item.id == this.animeMessage.id).collectButton
-    console.log(this.collect);
+    if(this.$store.state.collectAnime != null){
+      this.collect = this.$store.state.collectAnime.find(item => item.id == this.animeMessage.id).collectButton
+    }
+    //console.log(this.collect);
   },
   components: {
     Top,
@@ -77,7 +79,9 @@ export default {
             type: "collect",
             collect: this.animeMessage
           })
-          this.collect = this.$store.state.collectAnime.find(item => item.id == this.animeMessage.id).collectButton
+          if(this.$store.state.collectAnime != null){
+            this.collect = this.$store.state.collectAnime.find(item => item.id == this.animeMessage.id).collectButton
+          }
         }
         else{
           this.$store.commit({
