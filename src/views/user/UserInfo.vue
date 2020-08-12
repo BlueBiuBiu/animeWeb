@@ -95,7 +95,7 @@ export default {
     height: 35px;
     line-height: 35px;
     margin: 10px;
-    background: rgba(243, 114, 142, 0.7);
+    background: rgba(233, 90, 202, 0.7);
     border-radius: 5px;
   }
   .tabDetail {
