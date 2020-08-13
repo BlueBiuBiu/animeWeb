@@ -54,7 +54,7 @@
       </div>
       <div class="bottom">
         <div class="bottom-item" v-for="item in anime1">
-          <img :src="require('assets/img/animetest.jpg')" alt="">
+          <img :src="item.img" alt="">
           <div class="introduce">
             <div class="item-name"><a @click="nameClick(item)">{{item.name}}</a></div>
             <div class="item-author">{{item.author}}</div>
@@ -69,8 +69,7 @@
           :current-page.sync="currentPage"
           :page-size="14"
           layout="total, prev, pager, next, jumper"
-          :page-sizes="[14,14,14]"
-          :total="42">
+          :total="this.count">
         </el-pagination>
       </div>
     </div>
@@ -91,6 +90,7 @@ export default {
       birthIndex: 0,
       languageIndex: 0,
       rankIndex: 0,
+      count: 1,
       page: 1,
       pageSize: 14,
       type: '全部',
@@ -112,6 +112,12 @@ export default {
     //   })
     getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
         this.anime1 = res.content
+        this.count = 1
+        for(let item of this.anime1){
+          if(item != null){
+            this.count += 1
+          }
+        }
     })
   },
   components: {
@@ -151,6 +157,12 @@ export default {
       }
       getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
         this.anime1 = res.content
+        this.count = 1
+        for(let item of this.anime1){
+          if(item != null){
+            this.count += 1
+          }
+        }
       })
       //console.log(this.anime);
     },
@@ -177,6 +189,12 @@ export default {
       //console.log("place",index);
       getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
         this.anime1 = res.content
+        this.count = 1
+        for(let item of this.anime1){
+          if(item != null){
+            this.count += 1
+          }
+        }
       })
     },
     birthClick(index){  
@@ -207,6 +225,12 @@ export default {
       //console.log("birth",index);
       getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
         this.anime1 = res.content
+        this.count = 1
+        for(let item of this.anime1){
+          if(item != null){
+            this.count += 1
+          }
+        }
       })
     },
     languageClick(index){
@@ -230,6 +254,12 @@ export default {
       }
       getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
         this.anime1 = res.content
+        this.count = 1
+        for(let item of this.anime1){
+          if(item != null){
+            this.count += 1
+          }
+        }
       })
     },
     rankClick(index){
