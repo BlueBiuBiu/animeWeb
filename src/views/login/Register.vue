@@ -6,6 +6,8 @@
         <span>/</span>
         <span><a>注册</a></span>
       </div>
+      <span class="warn" v-show="!isExist">用户名不能为中文</span>
+      <span class="warn" v-show="isExist">注册的用户名已存在,请重新输入</span>
       <form action="" class="login-form">
         <div class="user">
           <img src="~assets/img/registeruser.svg" alt="">
@@ -24,12 +26,14 @@
 </template>
 
 <script>
-import {register} from "network/home"
+import {register,findUsername} from "network/home"
 export default {
   name: '',
   data() {
     return {
       user: {},
+      count: "",
+      isExist: false,
       isNullUsername: false,
       isNullPassword: false,
       backgroundImg: {
@@ -41,22 +45,35 @@ export default {
   },
   methods: {
     register(){
-      if(this.user.username == null){
-        this.isNullUsername = true
-        setTimeout(() => {
-          this.isNullUsername = false
-        },1000)
-      }
-      else if(this.user.password == null){
-        this.isNullPassword = true
-        setTimeout(() => {
-          this.isNullPassword = false
-        },1000)
-      }
-      else {
-          register(this.user.username,this.user.password).then(res => {
-          })
-      }
+      findUsername(this.user.username).then(res => {
+        if(res[0] != null){
+          //console.log('-----');
+          this.isExist = true
+          setTimeout(() => {
+            this.isExist = false
+          },2000)
+          //console.log(res[0]);
+        }
+        else{
+          if(this.user.username == null){
+            this.isNullUsername = true
+            setTimeout(() => {
+              this.isNullUsername = false
+            },1000)
+          }
+          else if(this.user.password == null){
+            this.isNullPassword = true
+            setTimeout(() => {
+              this.isNullPassword = false
+            },1000)
+          }
+          else {
+              register(this.user.username,this.user.password)
+              alert("注册成功！")
+              this.$router.replace("/login")
+          }
+        }
+      })
     },
     loginPage(){
       this.$router.replace("/login")
@@ -87,6 +104,10 @@ export default {
     font-size: 30px;
     font-weight: 700;
     color: #fff;
+  }
+  .warn {
+    color: red;
+    font-size: 15px;
   }
   .login-page{
     font-size: 15px;

@@ -49,3 +49,9 @@ export function register(username,password){
         url: '/register/' + String(username) +'/' +String(password)
     })
 }
+
+export function findUsername(username){
+    return request({
+        url: '/register/' + String(username)
+    })
+}
