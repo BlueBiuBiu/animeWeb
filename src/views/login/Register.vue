@@ -6,7 +6,6 @@
         <span>/</span>
         <span><a>注册</a></span>
       </div>
-      <span class="warn" v-show="!isExist">用户名不能为中文</span>
       <span class="warn" v-show="isExist">注册的用户名已存在,请重新输入</span>
       <form action="" class="login-form">
         <div class="user">
