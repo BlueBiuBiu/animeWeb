@@ -13,7 +13,8 @@ const state = {
   userCollect: [],
   loginUsername: '',
   collectAnime: [],
-  userInfo: []
+  userInfo: [],
+  searchResult: []
 }
 const store = new Vuex.Store({
   state,

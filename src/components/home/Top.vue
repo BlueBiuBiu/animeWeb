@@ -7,8 +7,8 @@
       </span>
       <span class="top-search">
         <form action="">
-          <input class="top-search-input" type="text" placeholder="输入相关动漫名">
-          <div><a href=""><img class="search-img" src="~assets/img/sousu.svg" alt=""></a></div>
+          <input class="top-search-input" type="text" placeholder="输入相关动漫名" v-model="searchContent">
+          <div><a @click="search"><img class="search-img" src="~assets/img/sousu.svg" alt=""></a></div>
         </form>
       </span>
       <div class="top-right">
@@ -26,12 +26,23 @@
 </template>
 
 <script>
+import {getHomeAnime} from 'network/home'
+
 export default {
   name: '',
   data() {
     return {
-      title: ['首页','日本动漫','国内动漫','欧美动漫','其它动漫']
+      title: ['首页','日本动漫','国内动漫','欧美动漫','其它动漫'],
+      searchContent: "",
+      anime: [],
+      searchResult: []
     }
+  },
+  created() {
+    getHomeAnime().then(res => {
+      //console.log(res);
+      this.anime = res
+    })
   },
   methods: {
     handleClick(index){
@@ -58,6 +69,24 @@ export default {
     },
     userInfo(){
       this.$router.push("/userInfo")
+    },
+    search(){
+      this.searchResult = []
+      //console.log(this.$route.path);
+      if(this.searchContent != ""){
+        this.searchResult = this.anime.filter(item => {
+        if(item.name.includes(this.searchContent)){
+          return item
+          }
+        })
+        this.$store.commit({
+          type: "search",
+          searchResult: this.searchResult
+        })
+        if(this.$route.path != "/searchResult"){
+          this.$router.replace("/searchResult")
+        }
+      }
     }
   }
 }

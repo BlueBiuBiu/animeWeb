@@ -8,6 +8,7 @@ const Introduce = () => import('views/introduce/Introduce')
 const Login = () => import('views/login/Login')
 const Register = () => import('views/login/Register')
 const UserInfo = () => import('views/user/UserInfo')
+const SearchResult =() => import('views/search/SearchResult')
 const Home = () => import('views/home/Home')
 
 Vue.use(VueRouter)
@@ -48,6 +49,10 @@ Vue.use(VueRouter)
     {
       path: '/userInfo',
       component: UserInfo
+    },
+    {
+      path: '/searchResult',
+      component: SearchResult
     }
   ]
 

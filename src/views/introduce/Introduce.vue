@@ -4,7 +4,7 @@
     <div class="introduce">
       <Video v-show="isShow" :animeLink="animeLink" ref="videoPlay"></Video>
       <div class="message" v-show="!isShow">
-        <img class="AnimeImg" :src="require('assets/img/animetest.jpg')" alt="">
+        <img class="AnimeImg" :src="animeMessage.img" alt="">
         <div class="AnimeMessage">
           <ul>
             <li><div>{{animeMessage.name}}</div></li>
