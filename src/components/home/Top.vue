@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="top">
+    <div :style="backgroundImg" class="top-logo"></div>
+    <div class="top" :class="offsetTop?'isFixed':'noFixed'">
       <span class="top-left"><a href="">sky动漫</a></span>
       <span class="top-center" v-for="(item,index) in title">
         <span class="top-center-item"><a @click="handleClick(index)">{{item}}</a></span>
@@ -32,10 +33,16 @@ export default {
   name: '',
   data() {
     return {
+      backgroundImg: {
+      backgroundImage: "url(" + require("assets/img/top.png") + ")",
+      backgroundRepeat: "no-repeat",
+      backgroundSize: "100% 100%",
+      },
       title: ['首页','日本动漫','国内动漫','欧美动漫','其它动漫'],
       searchContent: "",
       anime: [],
-      searchResult: []
+      searchResult: [],
+      offsetTop: false
     }
   },
   created() {
@@ -44,7 +51,19 @@ export default {
       this.anime = res
     })
   },
+  mounted () {
+    window.addEventListener('scroll', this.handleScroll);
+  },
+  destroyed(){
+    window.removeEventListener('scroll', this.handleScroll);
+  },
   methods: {
+    handleScroll(){
+    // 得到页面滚动的距离
+    let scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+    // 判断页面滚动的距离是否大于吸顶元素的位置
+    this.offsetTop = (scrollTop > 220)
+    },
     handleClick(index){
       switch(index){
         case 0:
@@ -101,13 +120,29 @@ export default {
     color: #2892f5;
     cursor: pointer;
   }
-  .userInfo{
+  .userInfo {
     color: turquoise;
   }
-  .top {
+  .top-logo {
+    margin-top: 8px;
     width: 100%;
-    height: 60px;
+    height: 200px;
+  }
+  .isFixed {
     background: #ff5777;
+    position: fixed;
+    top: 0;
+    z-index: 9;
+  }
+  .noFixed {
+    background: rgba(88, 85, 85,.5);
+    position: fixed;
+    top: 8px;
+  }
+  .top 
+  {
+    width: 99%;
+    height: 60px;
     color: white;
     font-size: 16px;
     display: flex;
@@ -142,8 +177,8 @@ export default {
     position: absolute;
     width: 25px;
     height: 25px;
-    top: 29px;
-    right: 385px;
+    top: 23px;
+    right: 362px;
   }
   .top-right {
     margin-left: 160px;
@@ -157,7 +192,7 @@ export default {
   }
   .top-right-login {
     position: absolute;
-    top: 10px;
+    top: 2px;
     padding-left: 10px;
   }
 </style>

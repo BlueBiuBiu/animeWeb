@@ -91,7 +91,7 @@ export default {
   .anime {
     display: flex;
     height: 550px;
-    margin-top: 70px;
+    margin-top: 45px;
     margin-bottom: 60px;
   }
   .anime-title {
