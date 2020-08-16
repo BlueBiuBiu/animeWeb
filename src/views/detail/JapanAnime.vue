@@ -1,6 +1,6 @@
 <template>
   <div>
-    <JapanAnime></JapanAnime>
+    <JapanAnime :place="place"></JapanAnime>
   </div>
 </template>
 
@@ -11,7 +11,7 @@ export default {
   name: '',
   data() {
     return {
-
+      place: '日本'
     }
   },
   components: {

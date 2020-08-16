@@ -1,6 +1,6 @@
 <template>
   <div>
-    <ChineseAnime>
+    <ChineseAnime :place="place">
       <span slot="topTitle">国内动漫</span>
     </ChineseAnime>
   </div>
@@ -10,6 +10,11 @@
 import ChineseAnime from 'components/detail/Detail'
 export default {
   name: '',
+  data() {
+    return {
+      place: '国内'
+    }
+  },
   components: {
     ChineseAnime
   }

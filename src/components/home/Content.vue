@@ -43,7 +43,6 @@ export default {
     return {
       more: '更多 >>',
       hot: '每周推荐',
-      img: require("assets/img/animetest.jpg"),
     }
   },
   props: {

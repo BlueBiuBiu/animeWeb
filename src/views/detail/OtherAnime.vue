@@ -1,6 +1,6 @@
 <template>
   <div>
-    <OtherAnime>
+    <OtherAnime :place="place">
       <span slot="topTitle">其它动漫</span>
     </OtherAnime>
   </div>
@@ -10,6 +10,11 @@
 import OtherAnime from 'components/detail/Detail'
 export default {
   name: '',
+  data() {
+    return {
+      place: '其它'
+    }
+  },
   components: {
     OtherAnime
   }
