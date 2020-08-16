@@ -7,6 +7,7 @@ import VideoPlayer from 'vue-video-player'
 import 'element-ui/lib/theme-chalk/index.css'
 import 'vue-video-player/src/custom-theme.css'
 import 'video.js/dist/video-js.css'
+import 'lib-flexible'
 
 Vue.prototype.$bus = new Vue()
 Vue.config.productionTip = false
