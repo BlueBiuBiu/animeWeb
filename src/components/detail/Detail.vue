@@ -98,7 +98,7 @@ export default {
       birth: '全部',
       language: '全部',
       rankType: ['按时间','按人气','按推荐'],
-      animeType: ['全部','恋爱','竞技','校园','热血','青春','搞笑','亲情'],
+      animeType: ['全部','恋爱','竞技','校园','热血','青春','搞笑','玄幻'],
       animePlace: ['全部','日本','国内','欧美','其它'],
       animeBirth: ['全部','2021','2020','2019','2018','2017','2016'],
       animeLanguage: ['全部','日语','国语','英语','粤语'],
@@ -166,7 +166,7 @@ export default {
           this.type = '搞笑'
           break;
         default:
-          this.type = '亲情'
+          this.type = '玄幻'
           break;
       }
       getAnimeTypePage(this.type,this.place,this.birth,this.language,this.page,this.pageSize).then(res => {
