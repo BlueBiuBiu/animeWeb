@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Top></Top>
+    <Top :isShow="isShow"></Top>
     <div class="userInfo" :style="tabBackgroundImg">
       <div class="tabControl">
         <div><a @click="profile">个人资料</a></div>
@@ -27,6 +27,7 @@ export default {
   name: '',
   data() {
     return {
+      isShow: false,
       isProfile: true,
       isHistory: false,
       tabBackgroundImg: {
@@ -88,10 +89,11 @@ export default {
     border-radius: 3px;
   }
   .tabControl {
-    margin: 0 auto;
+    margin-top: 78px;
     padding-top: 20px;
   }
   .tabControl div{
+    font-size: 13px;
     height: 35px;
     line-height: 35px;
     margin: 10px;

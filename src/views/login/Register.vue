@@ -147,6 +147,7 @@ export default {
   }
   .login-form input {
     width: 225px;
+    font-size: 13px;
     border: none;
     padding: 8px;
     border-bottom: 2px solid white;
@@ -159,6 +160,7 @@ export default {
   }
   .login-form button {
     width: 225px;
+    font-size: 13px;
     height: 25px;
     margin-top: 10px;
     border-radius: 10px;

@@ -71,7 +71,7 @@ export default {
   },
   filters: {
     hotAnimeFilters(value){
-      if(value == null) return "暂无更多"
+      if(value == null) return '暂无更多'
       return value
     }
   }
@@ -144,6 +144,7 @@ export default {
     position: relative;
   }
   .item-name {
+    font-size: 16px;
     position: absolute;
     top: -25px;
   }
@@ -193,6 +194,7 @@ export default {
     background: rgb(209, 208, 208);
   }
   .hot-recommand li a {
+    font-size: 16px;
     padding-left: 15px;
   }
 </style>

@@ -83,7 +83,10 @@ export default {
               type: "userInfo",
               res
             })
-            this.$store.state.collectAnime = JSON.parse(this.$store.state.userInfo.collect)
+            if(this.$store.state.userInfo.collect != ""){
+              //console.log('----------');
+              this.$store.state.collectAnime = JSON.parse(this.$store.state.userInfo.collect)
+            }
             this.$router.replace("/")
           }
           setTimeout(() => {
@@ -161,6 +164,7 @@ export default {
     position: absolute;
   }
   .login-form input {
+    font-size: 13px;
     width: 225px;
     border: none;
     padding: 8px;
@@ -173,6 +177,7 @@ export default {
     color: white;
   }
   .login-form button {
+    font-size: 13px;
     width: 225px;
     height: 25px;
     margin-top: 10px;

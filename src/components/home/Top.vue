@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :style="backgroundImg" class="top-logo"></div>
+    <div :style="backgroundImg" class="top-logo" v-show="isShow"></div>
     <div class="top" :class="offsetTop?'isFixed':'noFixed'">
       <span class="top-left"><a href="">sky动漫</a></span>
       <span class="top-center" v-for="(item,index) in title">
@@ -42,7 +42,15 @@ export default {
       searchContent: "",
       anime: [],
       searchResult: [],
-      offsetTop: false
+      offsetTop: false,
+    }
+  },
+  props: {
+    isShow: {
+      type: Boolean,
+      default(){
+        return true
+      }
     }
   },
   created() {
@@ -169,6 +177,7 @@ export default {
   }
   .top-search-input {
     border-radius: 5px;
+    font-size: 16px;
     width: 250px;
     height: 25px;
     position: relative;

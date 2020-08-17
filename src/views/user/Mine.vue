@@ -71,11 +71,13 @@ export default {
   }
   .desc {
     padding-left: 15px;
+    font-size: 13px;
     color: white;
   }
   .name {
     padding-top: 18px;
     padding-left: 160px;
+    font-size: 16px;
     color: white;
     overflow: hidden;
     text-overflow: ellipsis;

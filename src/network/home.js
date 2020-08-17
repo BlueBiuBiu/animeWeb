@@ -28,7 +28,7 @@ export function getAnimePlayIndex(id,index){
 
 export function getUserInfo(username,password){
     return request({
-        url: '/login/' + String(username) +'/' +String(password)
+        url: '/login/' + String(username) +'/' +String(password),
     })
 }
 

@@ -382,6 +382,7 @@ export default {
     height: 260px;
   }
   .item-name {
+    font-size: 16px;
     padding-top: 2px;
   }
   .item-author {
