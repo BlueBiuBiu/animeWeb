@@ -96,6 +96,7 @@ export default {
   input {
     width: 290px;
     height: 30px;
+    border-radius: 10px;
   }
   input::placeholder {
     font-size: 13px;
