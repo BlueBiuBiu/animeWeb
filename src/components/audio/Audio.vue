@@ -1,7 +1,7 @@
 <template>
   <div>
-    <button v-if="isShow" @click="btnClick">隐藏</button>
-    <button v-else @click="btnClick">展开</button>
+    <button v-if="isShow" @click="btnClick">收起</button>
+    <button v-else @click="btnClick">听歌</button>
     <div class="audio" v-show="isShow">
       <input type="text" placeholder="请输入歌名enter寻找~" @keyup.enter="search" v-model="searchContent">
       <div v-show='isSearch'>

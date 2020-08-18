@@ -8,7 +8,7 @@
       </span>
       <span class="top-search">
         <form action="">
-          <input class="top-search-input" type="text" placeholder="输入相关动漫名" v-model="searchContent">
+          <input class="top-search-input" type="text" placeholder="请输入相关动漫名~" v-model="searchContent">
           <div><a @click="search"><img class="search-img" src="~assets/img/sousu.svg" alt=""></a></div>
         </form>
       </span>
@@ -38,7 +38,7 @@ export default {
       backgroundRepeat: "no-repeat",
       backgroundSize: "100% 100%",
       },
-      title: ['首页','日本动漫','国内动漫','欧美动漫','其它动漫'],
+      title: ['首页','日本动漫','国内动漫','欧美动漫','其它动漫','看漫画'],
       searchContent: "",
       anime: [],
       searchResult: [],
@@ -88,6 +88,9 @@ export default {
           break;
         case 4:
           this.$router.push("/other")
+          break;
+        default:
+          this.$router.push("/cartoon")
           break;
       }
     },
@@ -163,7 +166,7 @@ export default {
     margin-left: 90px;
   }
   .top-center {
-    width: 100px;
+    width: 95px;
     line-height: 55px;
     height: 55px;
     padding-top: 5px;
@@ -186,8 +189,8 @@ export default {
     position: absolute;
     width: 25px;
     height: 25px;
-    top: 23px;
-    right: 362px;
+    top: 21px;
+    right: 320px;
   }
   .top-right {
     margin-left: 160px;
