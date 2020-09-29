@@ -53,6 +53,9 @@ Vue.use(VueRouter)
     },
     {
       path: '/userInfo',
+      meta: {
+        requireAuth: true
+      },
       component: UserInfo
     },
     {

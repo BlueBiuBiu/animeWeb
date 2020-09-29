@@ -14,8 +14,22 @@ Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(VideoPlayer)
 
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) { 
+    if (store.state.loginState) { 
+      next();
+    } else {
+      next({
+        path: '/login'
+      })
+    }
+  } else { 
+    next();
+  }
+})
 new Vue({
   router,
   store,
   render: h => h(App)
 }).$mount('#app')
+
