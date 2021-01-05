@@ -14,8 +14,7 @@ export default {
    },
 
    userInfo(state,payLoad){
-    //console.log(payLoad.res[0]);
-    state.userInfo = payLoad.res[0]
+    state.userInfo = payLoad.res
    },
 
    collect(state,payLoad){

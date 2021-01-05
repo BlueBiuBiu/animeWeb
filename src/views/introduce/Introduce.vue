@@ -14,11 +14,11 @@
             <li><span>年份:</span> {{animeMessage.year}}</li>
             <li><span>导演:</span> {{animeMessage.author}}</li>
             <li>
-              <div v-if="!this.collect">
+              <div v-if="!this.collect" class="collect">
                 <img src="~assets/img/wodezhuifan_before.svg" alt="">
                 <a @click="collectClick">收藏</a>
               </div>
-              <div v-else>
+              <div v-else class="collect">
                 <img src="~assets/img/wodezhuifan.svg" alt="">
                 <a @click="collectClick">已收藏</a>
               </div>
@@ -147,18 +147,21 @@ export default {
   .AnimeMessage div {
     font-size: 20px;
   }
+  .AnimeMessage .collect {
+    font-size: 15px;
+    position: relative;
+    
+  }
   .AnimeMessage img{
-    position: absolute;
-    top: 265px;
     width: 35px;
     height: 35px;
   }
   .AnimeMessage a {
     position: absolute;
     font-size: 15px;
-    left: 100px;
-    top: 275px;
-    color: #999;
+    left: 50px;
+    top: 10px;
+    white-space: nowrap;
   }
   .video-play {
     display: flex;
