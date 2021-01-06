@@ -14,3 +14,11 @@ export function uploadAvatar(id,avatar){
   })
 } 
 
+export function getCommentByAnimeId(animeId){
+  return request({
+    url: "/comment",
+    params: {
+      animeId
+    }
+  })
+}
