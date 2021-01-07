@@ -42,7 +42,37 @@
     </div>
     <div class="comment">
       <div class="title" ref="title">评论区</div>
-      <Comment :isComment="isComment" :comments="comments" @uploadComment="uploadComment"/>
+      <div class="commentSubmit">
+        <el-input
+          class="comment-input"
+          :rows="3.5"
+          type="textarea"
+          placeholder="发表一条评论吧~"
+          v-model="commentContent"
+          maxlength="1000"
+          change="inputChange"
+          show-word-limit
+        >
+        </el-input>
+        <el-button type="primary" @click="commentSubmit">发表评论</el-button>
+      </div>
+      <Comment
+        :isComment="isComment"
+        :comments="comments"
+        @uploadComment="uploadComment"
+      />
+      <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose"
+      >
+        <span>请先登录，是否跳转到登录?</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="toLogin">确 定</el-button>
+        </span>
+      </el-dialog>
     </div>
   </div>
 </template>
@@ -53,7 +83,7 @@ import Video from "components/video/Video.vue";
 import Comment from "components/comment/Comment.vue";
 
 import { getAnimePlayIndex } from "network/home";
-import { getCommentByAnimeId } from "network/home2";
+import { getCommentByAnimeId, uploadCommentInfo } from "network/home2";
 
 export default {
   name: "",
@@ -66,7 +96,9 @@ export default {
       animeLink: null,
       allReplyCount: 3,
       isComment: true,
-      comments: []
+      comments: [],
+      commentContent: "",
+      dialogVisible: false,
     };
   },
   created() {
@@ -87,6 +119,38 @@ export default {
     Comment,
   },
   methods: {
+    commentSubmit() {
+      const user = this.$store.state.userInfo;
+      const animeMessage = this.$store.state.animeMessage;
+      const animeId = this.$store.state.animeMessage.id;
+      if (!user.id) {
+        this.dialogVisible = true;
+      } else {
+        if (!this.commentContent) {
+          this.$message({
+            showClose: true,
+            message: "评论内容不能为空哦",
+            type: "warning",
+          });
+        } else {
+          uploadCommentInfo(animeId, this.commentContent, user.id).then(() => {
+            this.commentContent = "";
+            this.$message({
+              title: "成功",
+              message: "发表评论成功",
+              type: "success",
+            });
+            this.$store.commit({
+              type: "commentInfo",
+              commentInfo: "",
+            });
+            this.uploadComment()
+            const titleOffsetTop = this.$store.state.titleOffsetTop;
+            window.scroll(0, titleOffsetTop);
+          });
+        }
+      }
+    },
     collectClick() {
       if (this.$store.state.loginState == true) {
         this.collect = !this.collect;
@@ -134,26 +198,68 @@ export default {
           childComment.push(item);
         }
       }
+      for (let child of childComment) {
+        child.reply = [];
+        for (let child2 of childComment) {
+          if (child2.comment_id === child.id) {
+            child.reply.push(child2);
+          }
+        }
+      }
+      // console.log(childComment);
       for (let item of comment) {
         for (let child of childComment) {
           if (child.comment_id === item.id) {
+            if (child.reply.length) {
+              for (let child2 of child.reply) {
+                child2.replyTo = child.user.username;
+              }
+              item.reply = [...item.reply, ...child.reply];
+            }
             item.reply.push(child);
           }
         }
       }
       // console.log(comment);
-      this.comments = comment
+      this.comments = comment;
     },
-    uploadComment(){
-      const title = this.$refs.title
-      const titleOffsetTop = title.offsetTop
-      this.$store.commit({
-        type: "titleOffsetTop",
-        titleOffsetTop
-      })
+    uploadComment() {
       this.animeMessage = this.$store.state.animeMessage;
       this.get_comment_list(this.$store.state.animeMessage.id);
-    }
+      const title = this.$refs.title;
+      const titleOffsetTop = title.offsetTop;
+      this.$store.commit({
+        type: "titleOffsetTop",
+        titleOffsetTop,
+      });
+    },
+    handleClose(done) {
+      this.$confirm("确认关闭？")
+        .then((_) => {
+          done();
+        })
+        .catch((_) => {});
+    },
+    toLogin() {
+      this.$router.push("/login");
+      let scrollY =
+        window.pageYOffset !== undefined
+          ? window.pageYOffset
+          : (
+              document.documentElement ||
+              document.body.parentNode ||
+              document.body
+            ).scrollTop;
+      this.$store.dispatch({
+        type: "originalPosition",
+        scrollY,
+      });
+      this.$store.commit({
+        type: "commentInfo",
+        commentInfo: this.commentContent,
+      });
+      this.dialogVisible = false;
+    },
   },
 };
 </script>
@@ -246,5 +352,13 @@ a:hover {
 }
 .title {
   font-size: 20px;
+}
+.commentSubmit {
+  display: flex;
+  width: 80%;
+  margin: 20px 0;
+}
+.comment-input {
+  margin-right: 20px;
 }
 </style>

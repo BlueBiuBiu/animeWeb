@@ -1,7 +1,14 @@
 <template>
   <div>
     <div v-for="(item, index) in comments">
-      <div class="comments" v-if="index >= (maxCount * (currentPage-1)) && index < (maxCount * currentPage) && !isComment">
+      <div
+        class="comments"
+        v-if="
+          index >= maxCount * (currentPage - 1) &&
+          index < maxCount * currentPage &&
+          !isComment
+        "
+      >
         <div class="avatar">
           <img :src="item.user.avatar | noAvatar" alt="" />
         </div>
@@ -9,6 +16,10 @@
           <div class="user">
             <span class="name">{{ item.user.username }}</span>
             <span class="create">{{ item.createTime }}</span>
+            <span v-if="item.replyTo">
+              <span class="reply">回复</span>
+              <span class="reply-to">@{{ item.replyTo }}</span>
+            </span>
           </div>
           <p class="comment-content">
             {{ item.content }}
@@ -22,11 +33,20 @@
               <i class="thumb-down"></i>
             </div>
             <div>
-              <span class="reply">回复</span>
+              <span class="reply" @click="replyChild($event, item, index)"
+                >回复</span
+              >
             </div>
           </div>
           <div>
-            <div v-if="more && (index === maxCount * currentPage - 1 || index === comments.length - 1)" class="pagination">
+            <div
+              v-if="
+                more &&
+                (index === maxCount * currentPage - 1 ||
+                  index === comments.length - 1)
+              "
+              class="pagination"
+            >
               <el-pagination
                 @current-change="handleCurrentChange"
                 :current-page.sync="currentPage"
@@ -40,7 +60,14 @@
           </div>
         </div>
       </div>
-      <div class="comments" v-if="index >= (10 * (currentPage1-1)) && index < (10 * currentPage1)  && isComment">
+      <div
+        class="comments"
+        v-if="
+          index >= 10 * (currentPage1 - 1) &&
+          index < 10 * currentPage1 &&
+          isComment
+        "
+      >
         <div class="avatar">
           <img :src="item.user.avatar | noAvatar" alt="" />
         </div>
@@ -61,21 +88,40 @@
               <i class="thumb-down"></i>
             </div>
             <div>
-              <span class="reply">回复</span>
+              <span class="reply" @click="replyMain($event, item, index)"
+                >回复</span
+              >
             </div>
           </div>
-          <div v-if="(index === 10 * currentPage1 - 1 || index === comments.length - 1)" class="pagination1">
+          <Comment
+            :comments="item.reply"
+            :isComment="false"
+            :more="moreReply"
+            :maxCount="childCount"
+            :mainIndex="index"
+            @replyChild="replyTo"
+          />
+          <div
+            v-if="
+              index === 10 * currentPage1 - 1 || index === comments.length - 1
+            "
+            class="pagination1"
+          >
             <div class="commentSubmit">
-              <el-input class="comment-input"
+              <el-input
+                class="comment-input"
                 :rows="3.5"
                 type="textarea"
                 placeholder="请输入评论内容"
                 v-model="commentContent"
                 maxlength="1000"
                 change="inputChange"
-                show-word-limit>
+                show-word-limit
+              >
               </el-input>
-              <el-button type="primary" @click="commentSubmit">发表评论</el-button>
+              <el-button type="primary" @click="commentSubmit"
+                >发表评论</el-button
+              >
             </div>
             <el-pagination
               @current-change="handleCurrentChange1"
@@ -83,15 +129,37 @@
               :page-size="10"
               layout="total, prev, pager, next"
               next-text="下一页"
-              :total="comments.length">
+              :total="comments.length"
+            >
             </el-pagination>
           </div>
-          <Comment :comments="item.reply" :isComment="false" :more="moreReply" :maxCount="childCount"/>
-          <div v-if="isComment && item.reply.length > 2 && !moreReply" class="more">
+          <div
+            v-if="isComment && item.reply.length > 2 && !moreReply"
+            class="more"
+          >
             共
-            <span class="count">{{item.reply.length - 3}}</span>
+            <span class="count">{{ item.reply.length - 3 }}</span>
             条回复,
             <a @click="allReply">点击查看</a>
+          </div>
+          <div
+            v-if="index === currentIndex"
+            class="commentSubmit2"
+            @click="commentClick"
+            ref="replyMainComment"
+          >
+            <el-input
+              class="comment-input"
+              :rows="3.5"
+              type="textarea"
+              placeholder="请输入评论内容"
+              v-model="commentContent"
+              maxlength="1000"
+              change="inputChange"
+              show-word-limit
+            >
+            </el-input>
+            <el-button type="primary" @click="replyComment">发表评论</el-button>
           </div>
         </div>
       </div>
@@ -100,7 +168,8 @@
       title="提示"
       :visible.sync="dialogVisible"
       width="30%"
-      :before-close="handleClose">
+      :before-close="handleClose"
+    >
       <span>请先登录，是否跳转到登录?</span>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
@@ -112,7 +181,7 @@
 
 <script>
 import Comment from "components/comment/Comment";
-import { uploadCommentInfo } from "network/home2"
+import { uploadCommentInfo } from "network/home2";
 
 export default {
   name: "Comment",
@@ -124,7 +193,9 @@ export default {
       childCount: 3,
       minCount: 0,
       commentContent: "",
-      dialogVisible: false
+      dialogVisible: false,
+      currentIndex: -1,
+      commentId: null,
     };
   },
   props: {
@@ -142,24 +213,35 @@ export default {
     },
     more: {
       type: Boolean,
-      default(){
-        return false
-      }
+      default() {
+        return false;
+      },
     },
     maxCount: {
       type: Number,
-      default(){
-        return 3
-      }
-    }
+      default() {
+        return 3;
+      },
+    },
+    mainIndex: {
+      type: Number,
+      default() {
+        return -1;
+      },
+    },
   },
   components: {
     Comment,
   },
-  created(){
-    const scrollY = this.$store.state.originalPosition
-    this.commentContent = this.$store.state.commentInfo
-    window.scroll(0,scrollY)
+  mounted() {
+    const scrollY = this.$store.state.originalPosition;
+    this.commentContent = this.$store.state.commentInfo;
+    window.scroll(0, scrollY);
+  },
+  updated() {
+    document.body.onclick = () => {
+      this.currentIndex = -1;
+    };
   },
   filters: {
     noAvatar(value) {
@@ -171,9 +253,79 @@ export default {
     },
   },
   methods: {
+    replyTo(replyToId, mainIndex) {
+      console.log(replyToId, mainIndex);
+      this.currentIndex = mainIndex;
+      this.commentId = replyToId;
+      this.$nextTick(() => {
+        const scrollElement = this.$refs.replyMainComment[0];
+        window.scrollTo(0, scrollElement.offsetTop - window.screen.height / 2);
+      });
+    },
+    replyChild(e, item, index) {
+      e.stopPropagation();
+      const replyToId = item.id;
+      this.$emit("replyChild", replyToId, this.mainIndex);
+    },
+    commentClick(e) {
+      e.stopPropagation();
+    },
+    replyMain(e, item, index) {
+      e.stopPropagation();
+      // console.log(item);
+      if (this.currentIndex !== index) {
+        this.currentIndex = index;
+        this.commentId = item.id;
+        this.$nextTick(() => {
+          const scrollElement = this.$refs.replyMainComment[0];
+          window.scrollTo(
+            0,
+            scrollElement.offsetTop - window.screen.height / 2
+          );
+        });
+      }
+    },
+    replyComment() {
+      const user = this.$store.state.userInfo;
+      const animeMessage = this.$store.state.animeMessage;
+      const animeId = animeMessage.id;
+      const userId = user.id;
+      if (!user.id) {
+        this.dialogVisible = true;
+      } else {
+        if (!this.commentContent) {
+          this.$message({
+            showClose: true,
+            message: "评论内容不能为空哦",
+            type: "warning",
+          });
+        } else {
+          uploadCommentInfo(
+            animeId,
+            this.commentContent,
+            userId,
+            this.commentId
+          ).then(() => {
+            this.commentContent = "";
+            this.$message({
+              title: "成功",
+              message: "发表评论成功",
+              type: "success",
+            });
+            this.$emit("uploadComment");
+            // console.log(this.$refs.replyMainComment[0].offsetTop);
+            const scrollElement = this.$refs.replyMainComment[0];
+            window.scroll(
+              0,
+              scrollElement.offsetTop - scrollElement.offsetWidth
+            );
+          });
+        }
+      }
+    },
     allReply() {
       this.moreReply = true;
-      this.childCount = 6
+      this.childCount = 6;
     },
     handleCurrentChange(val) {
       this.currentPage = val;
@@ -183,54 +335,65 @@ export default {
       this.currentPage1 = val;
       console.log(`当前页: ${val}`);
     },
-    commentSubmit(){
-      const user = this.$store.state.userInfo
-      const animeMessage = this.$store.state.animeMessage
+    commentSubmit() {
+      const user = this.$store.state.userInfo;
+      const animeMessage = this.$store.state.animeMessage;
       const animeId = this.$store.state.animeMessage.id;
-      if(!user.id){
-        this.dialogVisible = true
+      if (!user.id) {
+        this.dialogVisible = true;
       } else {
-        if(!this.commentContent){
+        if (!this.commentContent) {
           this.$message({
             showClose: true,
-            message: '评论内容不能为空哦',
-            type: 'warning'
-          })
+            message: "评论内容不能为空哦",
+            type: "warning",
+          });
         } else {
-          uploadCommentInfo(animeId,this.commentContent,user.id).then(() => {
-            this.commentContent = ""
+          uploadCommentInfo(animeId, this.commentContent, user.id).then(() => {
+            this.commentContent = "";
             this.$message({
-              title: '成功',
-              message: '发表评论成功',
-              type: 'success'
+              title: "成功",
+              message: "发表评论成功",
+              type: "success",
             });
-            this.$emit("uploadComment")
-            const titleOffsetTop = this.$store.state.titleOffsetTop - 60
-            window.scroll(0,titleOffsetTop)
-          })
+            this.$store.commit({
+              type: "commentInfo",
+              commentInfo: "",
+            });
+            this.$emit("uploadComment");
+            const titleOffsetTop = this.$store.state.titleOffsetTop;
+            window.scroll(0, titleOffsetTop);
+          });
         }
       }
     },
     handleClose(done) {
-      this.$confirm('确认关闭？')
-        .then(_ => {
+      this.$confirm("确认关闭？")
+        .then((_) => {
           done();
         })
-        .catch(_ => {});
+        .catch((_) => {});
     },
-    toLogin(){
-      this.$router.push("/login")
-      let scrollY = window.scrollY
+    toLogin() {
+      this.$router.push("/login");
+      let scrollY =
+        window.pageYOffset !== undefined
+          ? window.pageYOffset
+          : (
+              document.documentElement ||
+              document.body.parentNode ||
+              document.body
+            ).scrollTop;
       this.$store.dispatch({
         type: "originalPosition",
-        scrollY
-      })
+        scrollY,
+      });
       this.$store.commit({
         type: "commentInfo",
-        commentInfo: this.commentContent
-      })
-      this.dialogVisible = false
-    }
+        commentInfo: this.commentContent,
+      });
+      this.dialogVisible = false;
+    },
   },
 };
 </script>
@@ -264,6 +427,14 @@ export default {
   margin-left: 10px;
   color: #99a2aa;
 }
+.user .reply {
+  color: #00a1d6;
+  font-size: 14px;
+}
+.user .reply-to {
+  color: #00a1d6;
+  font-size: 14px;
+}
 .comment-content {
   margin: 15px 0;
   font-size: 14px;
@@ -294,6 +465,13 @@ i {
 .reply {
   margin-left: 10px;
   font-size: 12px;
+  padding: 5px;
+  cursor: pointer;
+}
+.reply:hover {
+  padding: 3px;
+  border-radius: 3px;
+  background-color: #e5e9ef;
 }
 .more {
   color: #99a2aa;
@@ -321,6 +499,11 @@ i {
 .commentSubmit {
   display: flex;
   margin: 20px 0;
+}
+.commentSubmit2 {
+  display: flex;
+  margin: 20px 0;
+  width: 80%;
 }
 .comment-input {
   margin-right: 20px;
