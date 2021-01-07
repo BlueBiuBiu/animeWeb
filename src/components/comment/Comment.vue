@@ -101,12 +101,30 @@
             :mainIndex="index"
             @replyChild="replyTo"
           />
-          <div
-            v-if="
-              index === 10 * currentPage1 - 1 || index === comments.length - 1
-            "
-            class="pagination1"
-          >
+          <div v-if="isComment && item.reply.length > 2 && !moreReply" class="more">
+            共
+            <span class="count">{{ item.reply.length - 3 }}</span>
+            条回复,
+            <a @click="allReply">点击查看</a>
+          </div>
+          <div v-if="index === currentIndex"
+            class="commentSubmit2"
+            @click="commentClick"
+            ref="replyMainComment">
+            <el-input
+              class="comment-input"
+              :rows="3.5"
+              type="textarea"
+              placeholder="请输入评论内容"
+              v-model="commentContent"
+              maxlength="1000"
+              change="inputChange"
+              show-word-limit
+            >
+            </el-input>
+            <el-button type="primary" @click="replyComment">发表评论</el-button>
+          </div>
+          <div v-if="index === 10 * currentPage1 - 1 || index === comments.length - 1" class="pagination1">
             <div class="commentSubmit">
               <el-input
                 class="comment-input"
@@ -132,34 +150,6 @@
               :total="comments.length"
             >
             </el-pagination>
-          </div>
-          <div
-            v-if="isComment && item.reply.length > 2 && !moreReply"
-            class="more"
-          >
-            共
-            <span class="count">{{ item.reply.length - 3 }}</span>
-            条回复,
-            <a @click="allReply">点击查看</a>
-          </div>
-          <div
-            v-if="index === currentIndex"
-            class="commentSubmit2"
-            @click="commentClick"
-            ref="replyMainComment"
-          >
-            <el-input
-              class="comment-input"
-              :rows="3.5"
-              type="textarea"
-              placeholder="请输入评论内容"
-              v-model="commentContent"
-              maxlength="1000"
-              change="inputChange"
-              show-word-limit
-            >
-            </el-input>
-            <el-button type="primary" @click="replyComment">发表评论</el-button>
           </div>
         </div>
       </div>
