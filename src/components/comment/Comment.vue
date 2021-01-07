@@ -40,7 +40,7 @@
           </div>
         </div>
       </div>
-      <div class="comments" v-if="index < 10 && isComment">
+      <div class="comments" v-if="index >= (10 * (currentPage1-1)) && index < (10 * currentPage1)  && isComment">
         <div class="avatar">
           <img :src="item.user.avatar | noAvatar" alt="" />
         </div>
@@ -64,6 +64,28 @@
               <span class="reply">回复</span>
             </div>
           </div>
+          <div v-if="(index === 10 * currentPage1 - 1 || index === comments.length - 1)" class="pagination1">
+            <div class="commentSubmit">
+              <el-input class="comment-input"
+                :rows="3.5"
+                type="textarea"
+                placeholder="请输入评论内容"
+                v-model="commentContent"
+                maxlength="1000"
+                change="inputChange"
+                show-word-limit>
+              </el-input>
+              <el-button type="primary" @click="commentSubmit">发表评论</el-button>
+            </div>
+            <el-pagination
+              @current-change="handleCurrentChange1"
+              :current-page.sync="currentPage1"
+              :page-size="10"
+              layout="total, prev, pager, next"
+              next-text="下一页"
+              :total="comments.length">
+            </el-pagination>
+          </div>
           <Comment :comments="item.reply" :isComment="false" :more="moreReply" :maxCount="childCount"/>
           <div v-if="isComment && item.reply.length > 2 && !moreReply" class="more">
             共
@@ -74,20 +96,35 @@
         </div>
       </div>
     </div>
+    <el-dialog
+      title="提示"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <span>请先登录，是否跳转到登录?</span>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="toLogin">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
 import Comment from "components/comment/Comment";
+import { uploadCommentInfo } from "network/home2"
 
 export default {
   name: "Comment",
   data() {
     return {
       currentPage: 1,
+      currentPage1: 1,
       moreReply: false,
       childCount: 3,
-      minCount: 0
+      minCount: 0,
+      commentContent: "",
+      dialogVisible: false
     };
   },
   props: {
@@ -119,6 +156,11 @@ export default {
   components: {
     Comment,
   },
+  created(){
+    const scrollY = this.$store.state.originalPosition
+    this.commentContent = this.$store.state.commentInfo
+    window.scroll(0,scrollY)
+  },
   filters: {
     noAvatar(value) {
       if (value) {
@@ -137,6 +179,58 @@ export default {
       this.currentPage = val;
       console.log(`当前页: ${val}`);
     },
+    handleCurrentChange1(val) {
+      this.currentPage1 = val;
+      console.log(`当前页: ${val}`);
+    },
+    commentSubmit(){
+      const user = this.$store.state.userInfo
+      const animeMessage = this.$store.state.animeMessage
+      const animeId = this.$store.state.animeMessage.id;
+      if(!user.id){
+        this.dialogVisible = true
+      } else {
+        if(!this.commentContent){
+          this.$message({
+            showClose: true,
+            message: '评论内容不能为空哦',
+            type: 'warning'
+          })
+        } else {
+          uploadCommentInfo(animeId,this.commentContent,user.id).then(() => {
+            this.commentContent = ""
+            this.$message({
+              title: '成功',
+              message: '发表评论成功',
+              type: 'success'
+            });
+            this.$emit("uploadComment")
+            const titleOffsetTop = this.$store.state.titleOffsetTop - 60
+            window.scroll(0,titleOffsetTop)
+          })
+        }
+      }
+    },
+    handleClose(done) {
+      this.$confirm('确认关闭？')
+        .then(_ => {
+          done();
+        })
+        .catch(_ => {});
+    },
+    toLogin(){
+      this.$router.push("/login")
+      let scrollY = window.scrollY
+      this.$store.dispatch({
+        type: "originalPosition",
+        scrollY
+      })
+      this.$store.commit({
+        type: "commentInfo",
+        commentInfo: this.commentContent
+      })
+      this.dialogVisible = false
+    }
   },
 };
 </script>
@@ -220,5 +314,15 @@ i {
 }
 .pagination {
   margin-top: 20px;
+}
+.pagination1 {
+  text-align: center;
+}
+.commentSubmit {
+  display: flex;
+  margin: 20px 0;
+}
+.comment-input {
+  margin-right: 20px;
 }
 </style>

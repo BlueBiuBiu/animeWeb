@@ -22,3 +22,15 @@ export function getCommentByAnimeId(animeId){
     }
   })
 }
+
+export function uploadCommentInfo(animeId,content,userId,commentId=null){
+  return request({
+    url: `/comment/${userId}`,
+    method: "POST",
+    data: {
+      animeId,
+      content,
+      commentId
+    }
+  })
+}

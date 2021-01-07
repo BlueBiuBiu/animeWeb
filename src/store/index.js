@@ -14,7 +14,10 @@ const state = {
   loginUsername: '',
   collectAnime: [],
   userInfo: [],
-  searchResult: []
+  searchResult: [],
+  originalPosition: 0,
+  commentInfo: "",
+  titleOffsetTop: 0
 }
 const store = new Vuex.Store({
   state,

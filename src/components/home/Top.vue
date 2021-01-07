@@ -77,7 +77,6 @@ export default {
   },
   filters: {
     noAvatar(value) {
-      console.log(value);
       if (value) {
         return value;
       } else {

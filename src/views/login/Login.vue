@@ -103,7 +103,7 @@ export default {
               type: "loginSuccess",
               username: this.user,
             });
-            this.$router.replace("/");
+            this.$router.go(-1);
           }
           setTimeout(() => {
             this.isUsername = false;

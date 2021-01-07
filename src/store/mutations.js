@@ -44,5 +44,17 @@ export default {
    search(state,payLoad){
      //console.log(payLoad);
      state.searchResult = payLoad.searchResult
+   },
+
+   originalPosition(state,payload){
+     state.originalPosition = payload.scrollY
+   },
+
+   commentInfo(state,payload){
+    state.commentInfo = payload.commentInfo
+   },
+
+   titleOffsetTop(state, payload){
+     state.titleOffsetTop = payload.titleOffsetTop
    }
 }

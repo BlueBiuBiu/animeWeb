@@ -41,8 +41,8 @@
       </div>
     </div>
     <div class="comment">
-      <div class="title">评论区</div>
-      <Comment :isComment="isComment" :comments="comments"/>
+      <div class="title" ref="title">评论区</div>
+      <Comment :isComment="isComment" :comments="comments" @uploadComment="uploadComment"/>
     </div>
   </div>
 </template>
@@ -66,7 +66,7 @@ export default {
       animeLink: null,
       allReplyCount: 3,
       isComment: true,
-      comments: [],
+      comments: []
     };
   },
   created() {
@@ -144,6 +144,16 @@ export default {
       // console.log(comment);
       this.comments = comment
     },
+    uploadComment(){
+      const title = this.$refs.title
+      const titleOffsetTop = title.offsetTop
+      this.$store.commit({
+        type: "titleOffsetTop",
+        titleOffsetTop
+      })
+      this.animeMessage = this.$store.state.animeMessage;
+      this.get_comment_list(this.$store.state.animeMessage.id);
+    }
   },
 };
 </script>
