@@ -34,3 +34,23 @@ export function uploadCommentInfo(animeId,content,userId,commentId=null){
     }
   })
 }
+
+export function thumbUpAdd(commentId,userId){
+  return request({
+    url: `/comment/thumb/up/${commentId}`,
+    method: "POST",
+    params: {
+      userId
+    }
+  })
+}
+
+export function thumbDownAdd(commentId,userId){
+  return request({
+    url: `/comment/thumb/down/${commentId}`,
+    method: "POST",
+    params: {
+      userId
+    }
+  })
+}

@@ -88,16 +88,16 @@ export default {
           } else {
             //console.log("登录成功");
             getAvatarById(res[0].id).then((res2) => {
-              const avatar_url = res2[0].avatar_url;
+              console.log(res2);
               this.$store.commit({
                 type: "userInfo",
-                res: { ...res[0], avatar_url }
+                res: { ...res[0],...res2[0] }
               });
               if(!this.$store.state.userInfo.collect.length) {
-              this.$store.state.collectAnime = JSON.parse(
-                this.$store.state.userInfo.collect[0]
-              );
-            }
+                this.$store.state.collectAnime = JSON.parse(
+                  this.$store.state.userInfo.collect[0]
+                );
+              }
             });
             this.$store.commit({
               type: "loginSuccess",

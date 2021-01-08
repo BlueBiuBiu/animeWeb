@@ -26,16 +26,18 @@
           </p>
           <div class="info">
             <div>
-              <i class="thumb-up"></i>
-              <span>12345</span>
+              <i v-if="(item.thumbUpIds && item.thumbUpIds.includes(item.id)) || 0" class="thumb-up-active" @click="childThumbUp(item)"></i>
+              <i v-else class="thumb-up" @click="childThumbUp(item)"></i>
+              <span>{{ item.thumb_up }}</span>
             </div>
             <div>
-              <i class="thumb-down"></i>
+              <i v-if="(item.thumbDownIds && item.thumbDownIds.includes(item.id)) || 0" class="thumb-down-active" @click="childThumbDown(item)"></i>
+              <i v-else class="thumb-down" @click="childThumbDown(item)"></i>
             </div>
             <div>
-              <span class="reply" @click="replyChild($event, item, index)"
-                >回复</span
-              >
+              <span class="reply" @click="replyChild($event, item, index)">
+                回复
+              </span>
             </div>
           </div>
           <div>
@@ -81,11 +83,13 @@
           </p>
           <div class="info">
             <div>
-              <i class="thumb-up"></i>
-              <span>12345</span>
+              <i v-if="(item.user.thumbUpIds && item.user.thumbUpIds.includes(item.id)) || 0" class="thumb-up-active" @click="mainThumbUp(item)"></i>
+              <i v-else class="thumb-up" @click="mainThumbUp(item)"></i>
+              <span>{{ item.thumb_up }}</span>
             </div>
             <div>
-              <i class="thumb-down"></i>
+              <i v-if="(item.user.thumbDownIds && item.user.thumbDownIds.includes(item.id)) || 0" class="thumb-down-active" @click="mainThumbDown(item)"></i>
+              <i v-else class="thumb-down" @click="mainThumbDown(item)"></i>
             </div>
             <div>
               <span class="reply" @click="replyMain($event, item, index)"
@@ -100,17 +104,24 @@
             :maxCount="childCount"
             :mainIndex="index"
             @replyChild="replyTo"
+            @mainThumbUp="mainThumbUp"
+            @mainThumbDown="mainThumbDown"
           />
-          <div v-if="isComment && item.reply.length > 2 && !moreReply" class="more">
+          <div
+            v-if="isComment && item.reply.length > 2 && !moreReply"
+            class="more"
+          >
             共
             <span class="count">{{ item.reply.length - 3 }}</span>
             条回复,
             <a @click="allReply">点击查看</a>
           </div>
-          <div v-if="index === currentIndex"
+          <div
+            v-if="index === currentIndex"
             class="commentSubmit2"
             @click="commentClick"
-            ref="replyMainComment">
+            ref="replyMainComment"
+          >
             <el-input
               class="comment-input"
               :rows="3.5"
@@ -124,7 +135,12 @@
             </el-input>
             <el-button type="primary" @click="replyComment">发表评论</el-button>
           </div>
-          <div v-if="index === 10 * currentPage1 - 1 || index === comments.length - 1" class="pagination1">
+          <div
+            v-if="
+              index === 10 * currentPage1 - 1 || index === comments.length - 1
+            "
+            class="pagination1"
+          >
             <div class="commentSubmit">
               <el-input
                 class="comment-input"
@@ -171,7 +187,7 @@
 
 <script>
 import Comment from "components/comment/Comment";
-import { uploadCommentInfo } from "network/home2";
+import { uploadCommentInfo, getAvatarById, thumbUpAdd, thumbDownAdd } from "network/home2";
 
 export default {
   name: "Comment",
@@ -185,7 +201,7 @@ export default {
       commentContent: "",
       dialogVisible: false,
       currentIndex: -1,
-      commentId: null,
+      commentId: null
     };
   },
   props: {
@@ -243,6 +259,72 @@ export default {
     },
   },
   methods: {
+    async childThumbUp(item){ 
+      this.$emit("mainThumbUp",item)
+    },
+    async childThumbDown(item){
+      this.$emit("mainThumbDown",item)
+    },
+    async mainThumbUp(item){
+      const user = this.$store.state.userInfo;
+      const thumbUpIds = this.$store.state.userInfo.thumb_up_ids
+      const thumbDownIds = this.$store.state.userInfo.thumb_down_ids
+      if (!user.id) {
+        this.dialogVisible = true;
+      } else {
+        if(thumbUpIds && thumbUpIds.includes(item.id)){
+          this.$message({
+            message: '你已经点过赞了~',
+            type: 'warning'
+          })
+          return
+        }
+        if(thumbDownIds && thumbDownIds.includes(item.id)){
+           this.$message({
+            message: '你已经点踩了~',
+            type: 'warning'
+          })
+          return
+        }
+        await thumbUpAdd(item.id,user.id)
+        this.refreshUserInfo(user.id)
+        this.$message({
+          message: '点赞成功~',
+          type: 'success'
+        })
+        this.$emit("uploadComment");
+      }
+    },
+    async mainThumbDown(item){
+      const user = this.$store.state.userInfo;
+      const thumbUpIds = this.$store.state.userInfo.thumb_up_ids
+      const thumbDownIds = this.$store.state.userInfo.thumb_down_ids
+       if (!user.id) {
+        this.dialogVisible = true;
+      } else {
+        if(thumbDownIds && thumbDownIds.includes(item.id)){
+          this.$message({
+            message: '你已经点过踩了~',
+            type: 'warning'
+          })
+          return
+        }
+        if(thumbUpIds && thumbUpIds.includes(item.id)){
+           this.$message({
+            message: '你已经点赞了~',
+            type: 'warning'
+          })
+          return
+        }
+        await thumbDownAdd(item.id,user.id)
+        this.refreshUserInfo(user.id)
+        this.$message({
+          message: '点踩成功~',
+          type: 'success'
+        })
+        this.$emit("uploadComment");
+      }
+    },
     replyTo(replyToId, mainIndex) {
       console.log(replyToId, mainIndex);
       this.currentIndex = mainIndex;
@@ -384,8 +466,19 @@ export default {
       });
       this.dialogVisible = false;
     },
-  },
-};
+    refreshUserInfo(id){
+      const userInfo = this.$store.state.userInfo
+      getAvatarById(id).then(res => {
+      // console.log(res);
+      this.$store.commit({
+        type: "refreshUserInfo",
+        res
+      });
+
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>
@@ -442,13 +535,24 @@ i {
   display: inline-block;
   width: 14px;
   height: 14px;
+  margin: 0 8px;
+  cursor: pointer;
 }
 .thumb-up {
   background: url("../../assets/img/thumb.svg") no-repeat;
   background-size: contain;
 }
+.thumb-up-active {
+  background: url("../../assets/img/thumb_active.svg") no-repeat;
+  background-size: contain;
+}
 .thumb-down {
   background: url("../../assets/img/thumb_down.svg") no-repeat;
+  background-size: contain;
+  margin-left: 10px;
+}
+.thumb-down-active {
+  background: url("../../assets/img/thumb_down_active.svg") no-repeat;
   background-size: contain;
   margin-left: 10px;
 }

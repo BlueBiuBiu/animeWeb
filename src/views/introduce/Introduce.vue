@@ -187,6 +187,9 @@ export default {
     },
     async get_comment_list(animeId) {
       const result = await getCommentByAnimeId(animeId);
+      const userId = this.$store.state.userInfo.id
+      const thumbUpIds = this.$store.state.userInfo.thumb_up_ids
+      const thumbDownIds = this.$store.state.userInfo.thumb_down_ids
       // this.comments = result
       let comment = [];
       let childComment = [];
@@ -200,6 +203,8 @@ export default {
       }
       for (let child of childComment) {
         child.reply = [];
+        child.thumbUpIds = thumbUpIds
+        child.thumbDownIds = thumbDownIds
         for (let child2 of childComment) {
           if (child2.comment_id === child.id) {
             child.reply.push(child2);
@@ -218,6 +223,12 @@ export default {
             }
             item.reply.push(child);
           }
+        }
+      }
+      for(let item of comment){
+        if(userId && userId === item.user.id){
+          item.user.thumbUpIds = thumbUpIds
+          item.user.thumbDownIds = thumbDownIds
         }
       }
       // console.log(comment);

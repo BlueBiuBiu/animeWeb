@@ -17,6 +17,11 @@ export default {
     state.userInfo = payLoad.res
    },
 
+   refreshUserInfo(state,payload){
+    state.userInfo.thumb_up_ids = payload.res[0].thumb_up_ids
+    state.userInfo.thumb_down_ids = payload.res[0].thumb_down_ids
+   },
+
    collect(state,payLoad){
      //console.log(payLoad.collect.id);
     if(state.collectAnime == null){
