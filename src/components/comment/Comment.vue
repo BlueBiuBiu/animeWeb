@@ -15,7 +15,7 @@
         <div class="content">
           <div class="user">
             <span class="name">{{ item.user.username }}</span>
-            <span class="create">{{ item.createTime }}</span>
+            <span class="create">{{ item.createTime | timeFormat }}</span>
             <span v-if="item.replyTo">
               <span class="reply">回复</span>
               <span class="reply-to">@{{ item.replyTo }}</span>
@@ -76,7 +76,9 @@
         <div class="content">
           <div class="user">
             <span class="name">{{ item.user.username }}</span>
-            <span class="create">{{ item.createTime }}</span>
+            <el-tooltip class="item" effect="dark" :content="item.createTime | tooltipFormat" placement="top">
+              <span class="create">{{ item.createTime | timeFormat }}</span>
+            </el-tooltip>
           </div>
           <p class="comment-content">
             {{ item.content }}
@@ -187,6 +189,7 @@
 
 <script>
 import Comment from "components/comment/Comment";
+import moment from "moment"
 import { uploadCommentInfo, getAvatarById, thumbUpAdd, thumbDownAdd } from "network/home2";
 
 export default {
@@ -257,6 +260,15 @@ export default {
         return require("assets/img/akari.jpg");
       }
     },
+    timeFormat(value){
+      const result = value.split(".")
+      const time = result[0].replace("T"," ")
+      // console.log(moment(time).fromNow());
+      return moment(time).fromNow()
+    },
+    tooltipFormat(value){
+      return moment(value).format('YYYY-MM-DD HH:mm:ss')
+    }
   },
   methods: {
     async childThumbUp(item){ 
@@ -470,11 +482,10 @@ export default {
       const userInfo = this.$store.state.userInfo
       getAvatarById(id).then(res => {
       // console.log(res);
-      this.$store.commit({
-        type: "refreshUserInfo",
-        res
-      });
-
+        this.$store.commit({
+          type: "refreshUserInfo",
+          res
+        });
       })
     }
   }
